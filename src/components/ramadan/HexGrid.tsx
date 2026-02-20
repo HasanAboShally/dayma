@@ -806,6 +806,13 @@ export function HexGrid({ locale }: HexGridProps) {
                   state={state}
                   onStateChange={persist}
                   onClose={() => setSelectedHex(null)}
+                  onSave={() => {
+                    setSelectedHex(null);
+                    setShowConfetti(true);
+                    playSound("celebrate");
+                    haptic("heavy");
+                    setTimeout(() => setShowConfetti(false), 3000);
+                  }}
                 />
               </Suspense>
             </motion.div>

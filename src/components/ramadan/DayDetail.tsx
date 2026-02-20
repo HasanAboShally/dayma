@@ -44,6 +44,7 @@ interface DayDetailProps {
   state: AppState;
   onStateChange: (state: AppState) => void;
   onClose: () => void;
+  onSave?: () => void;
 }
 
 // ── Component ────────────────────────────────────────────────
@@ -54,6 +55,7 @@ export function DayDetail({
   state,
   onStateChange,
   onClose,
+  onSave,
 }: DayDetailProps) {
   const t = createTranslator(locale);
   const isAr = locale === "ar";
@@ -493,6 +495,23 @@ export function DayDetail({
           </div>
         </div>
       </div>
+
+      {/* ── Save & Close Button ── */}
+      <motion.button
+        type="button"
+        whileTap={{ scale: 0.96 }}
+        onClick={() => {
+          if (onSave) onSave();
+          else onClose();
+        }}
+        className="mt-6 flex w-full items-center justify-center gap-2 rounded-2xl bg-primary-600 px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-primary-600/25 transition-colors hover:bg-primary-700 active:bg-primary-800"
+        style={{
+          fontFamily: isAr ? "var(--font-arabic)" : "var(--font-heading)",
+        }}
+      >
+        <Icon name="check" className="h-4 w-4" />
+        {t("day.save_and_close")}
+      </motion.button>
     </div>
   );
 }

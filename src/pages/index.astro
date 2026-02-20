@@ -1,6 +1,7 @@
 ---
 export const prerender = true;
 // Language selector - redirect to default locale or show selector
+// @ts-ignore - defaultLocale IS used in Astro.redirect below; astro check false positive
 import { defaultLocale } from "@/i18n/utils";
 
 // Redirect to default locale

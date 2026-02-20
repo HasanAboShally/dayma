@@ -92,7 +92,7 @@ async function showReminder(): Promise<void> {
         vibrate: [100, 50, 100],
         tag: "daily-reminder", // Prevents duplicate notifications
         data: { url: "/en/app/today" },
-      });
+      } as NotificationOptions & { vibrate?: number[] });
     } else {
       // Fallback — direct Notification (only works while tab is visible)
       new Notification(title, { body, icon, badge });

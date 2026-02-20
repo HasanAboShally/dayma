@@ -176,7 +176,8 @@
     "reflection_title": "تأملات",
     "today": "اليوم",
     "future_message": "لم يحن هذا اليوم بعد. عُد حينها!",
-    "reflection_placeholder": "أي تأملات عن اليوم؟ (اختياري)"
+    "reflection_placeholder": "أي تأملات عن اليوم؟ (اختياري)",
+    "save_and_close": "حفظ وإغلاق"
   },
 
   "today": {
