@@ -1,0 +1,90 @@
+{
+  "name": "dayma",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "A modern Astro starter template with React, Tailwind, i18n (LTR/RTL), animations, and Cloudflare Pages deployment",
+  "bin": {
+    "launchkit": "./scripts/launchkit.mjs"
+  },
+  "scripts": {
+    "setup": "node scripts/setup.mjs",
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "lint": "biome check src",
+    "lint:fix": "biome check src --write",
+    "format": "biome format --write .",
+    "check": "astro check && tsc --noEmit && biome check .",
+    "test": "bun test",
+    "test:watch": "bun test --watch",
+    "test:coverage": "bun test --coverage",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:debug": "playwright test --debug",
+    "test:e2e:report": "playwright show-report",
+    "test:all": "bun test && bun run test:e2e",
+    "analyze": "bun run build && open stats.html",
+    "prepare": "husky"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.6",
+    "@astrojs/cloudflare": "^12.0.0",
+    "@astrojs/react": "^4.0.0",
+    "@astrojs/sitemap": "^3.2.0",
+    "@tailwindcss/vite": "^4.1.18",
+    "astro": "^5.1.0",
+    "clsx": "^2.1.1",
+    "framer-motion": "^11.15.0",
+    "lucide-react": "^0.474.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "tailwind-merge": "^2.6.0",
+    "tailwindcss": "^4.1.18",
+    "web-vitals": "^5.1.0",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.3.13",
+    "@cloudflare/workers-types": "^4.20250214.0",
+    "@commitlint/cli": "^20.3.1",
+    "@commitlint/config-conventional": "^20.3.1",
+    "@fission-ai/openspec": "^0.23.0",
+    "@playwright/test": "^1.57.0",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.1",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/bun": "latest",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "babel-plugin-react-compiler": "^19.0.0-beta-af1b7da-20250417",
+    "happy-dom": "^20.3.1",
+    "husky": "^9.1.7",
+    "playwright": "^1.57.0",
+    "rollup-plugin-visualizer": "^6.0.5",
+    "typescript": "^5.9.3",
+    "wrangler": "^4.0.0"
+  },
+  "keywords": [
+    "astro",
+    "react",
+    "tailwind",
+    "cloudflare",
+    "i18n",
+    "rtl",
+    "template",
+    "starter"
+  ],
+  "author": "",
+  "license": "MIT",
+  "lint-staged": {
+    "*.{ts,tsx,astro,js,jsx}": [
+      "biome check --write"
+    ],
+    "*.{json,md,css}": [
+      "biome format --write"
+    ]
+  }
+}

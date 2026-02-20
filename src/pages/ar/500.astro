@@ -1,0 +1,34 @@
+---
+export const prerender = true;
+/**
+ * 500 Server Error Page (Arabic)
+ */
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { useTranslations } from "@/i18n/utils";
+
+const t = useTranslations("ar");
+---
+
+<BaseLayout title="خطأ في الخادم" noindex={true}>
+  <main class="flex min-h-[70vh] items-center justify-center px-4">
+    <div class="max-w-md text-center">
+      <h1 class="mb-4 text-9xl font-bold text-red-500">500</h1>
+      <h2
+        class="mb-4 text-2xl font-semibold text-secondary-900 dark:text-white"
+      >
+        {t("errors.500.title")}
+      </h2>
+      <p class="mb-8 text-secondary-600 dark:text-secondary-400">
+        {t("errors.500.description")}
+      </p>
+      <div class="flex flex-col justify-center gap-4 sm:flex-row">
+        <button onclick="location.reload()" class="btn btn-primary">
+          {t("errors.500.cta")}
+        </button>
+        <a href="/ar" class="btn btn-secondary">
+          {t("errors.404.cta")}
+        </a>
+      </div>
+    </div>
+  </main>
+</BaseLayout>

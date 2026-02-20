@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <rect width="512" height="512" rx="96" fill="url(#bg)"/>
+  <!-- Crescent moon -->
+  <circle cx="256" cy="230" r="120" fill="#FDE68A"/>
+  <circle cx="300" cy="210" r="100" fill="url(#bg)"/>
+  <!-- Star -->
+  <polygon points="220,140 228,162 252,162 233,176 240,198 220,184 200,198 207,176 188,162 212,162" fill="#FDE68A"/>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#059669"/>
+      <stop offset="1" stop-color="#047857"/>
+    </linearGradient>
+  </defs>
+</svg>

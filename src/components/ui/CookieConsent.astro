@@ -1,0 +1,335 @@
+---
+/**
+ * Cookie Consent Banner — zero-JS-framework, pure CSS animations.
+ * Replaces the React + framer-motion version to eliminate ~200KB
+ * of JS from every page (React DOM + framer-motion).
+ */
+import { getLangFromUrl, getDirection, type Locale } from "@/i18n/utils";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const isRTL = locale === "ar";
+---
+
+<div
+  id="cookie-consent"
+  class="cookie-banner"
+  dir={isRTL ? "rtl" : "ltr"}
+  aria-hidden="true"
+  style="display:none"
+>
+  <!-- Main banner -->
+  <div id="cc-main" class="mx-auto max-w-6xl">
+    <div
+      class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between"
+    >
+      <div class="flex-1">
+        <h3 class="text-lg font-semibold text-secondary-900 dark:text-white">
+          {locale === "ar" ? "نحن نقدر خصوصيتك" : "We value your privacy"}
+        </h3>
+        <p class="mt-1 text-sm text-secondary-600 dark:text-secondary-400">
+          {
+            locale === "ar"
+              ? 'نستخدم ملفات تعريف الارتباط لتحسين تجربة التصفح وتقديم محتوى مخصص وتحليل حركة المرور. بالنقر على "قبول الكل"، فإنك توافق على استخدامنا لملفات تعريف الارتباط.'
+              : 'We use cookies to enhance your browsing experience, serve personalized content, and analyze our traffic. By clicking "Accept All", you consent to our use of cookies.'
+          }
+          {" "}
+          <a
+            href={`/${locale}/privacy`}
+            class="text-primary-600 hover:underline"
+          >
+            {locale === "ar" ? "سياسة الخصوصية" : "Privacy Policy"}
+          </a>
+        </p>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <button data-cc="customize" class="btn btn-ghost text-sm">
+          {locale === "ar" ? "تخصيص" : "Customize"}
+        </button>
+        <button data-cc="necessary" class="btn btn-secondary text-sm">
+          {locale === "ar" ? "الضرورية فقط" : "Necessary Only"}
+        </button>
+        <button data-cc="accept-all" class="btn btn-primary text-sm">
+          {locale === "ar" ? "قبول الكل" : "Accept All"}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Customize panel (hidden by default) -->
+  <div id="cc-customize" class="mx-auto max-w-6xl" style="display:none">
+    <div class="space-y-4">
+      <div class="flex items-center justify-between">
+        <h3 class="text-lg font-semibold text-secondary-900 dark:text-white">
+          {locale === "ar" ? "تخصيص" : "Customize"}
+        </h3>
+        <button
+          data-cc="close-customize"
+          class="text-secondary-500 hover:text-secondary-700 dark:hover:text-secondary-300"
+          aria-label="Close"
+        >
+          <svg
+            class="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+
+      <div class="space-y-3">
+        <!-- Necessary (always on) -->
+        <div
+          class="flex items-center justify-between rounded-lg bg-secondary-50 p-3 dark:bg-secondary-800"
+        >
+          <div>
+            <p class="font-medium text-secondary-900 dark:text-white">
+              {locale === "ar" ? "ضرورية" : "Necessary"}
+            </p>
+            <p class="text-sm text-secondary-600 dark:text-secondary-400">
+              {
+                locale === "ar"
+                  ? "ضرورية لعمل الموقع بشكل صحيح. لا يمكن تعطيلها."
+                  : "Essential for the website to function properly. Cannot be disabled."
+              }
+            </p>
+          </div>
+          <input
+            type="checkbox"
+            checked
+            disabled
+            class="h-5 w-5 cursor-not-allowed rounded border-secondary-300 text-primary-600 opacity-60"
+          />
+        </div>
+
+        <!-- Analytics -->
+        <div
+          class="flex items-center justify-between rounded-lg bg-secondary-50 p-3 dark:bg-secondary-800"
+        >
+          <div>
+            <p class="font-medium text-secondary-900 dark:text-white">
+              {locale === "ar" ? "تحليلية" : "Analytics"}
+            </p>
+            <p class="text-sm text-secondary-600 dark:text-secondary-400">
+              {
+                locale === "ar"
+                  ? "تساعدنا على فهم كيفية تفاعل الزوار مع موقعنا."
+                  : "Help us understand how visitors interact with our website."
+              }
+            </p>
+          </div>
+          <button
+            role="switch"
+            aria-checked="false"
+            data-cc-toggle="analytics"
+            class="cc-toggle"
+          >
+            <span class="cc-toggle-dot"></span>
+          </button>
+        </div>
+
+        <!-- Marketing -->
+        <div
+          class="flex items-center justify-between rounded-lg bg-secondary-50 p-3 dark:bg-secondary-800"
+        >
+          <div>
+            <p class="font-medium text-secondary-900 dark:text-white">
+              {locale === "ar" ? "تسويقية" : "Marketing"}
+            </p>
+            <p class="text-sm text-secondary-600 dark:text-secondary-400">
+              {
+                locale === "ar"
+                  ? "تستخدم لتتبع الزوار عبر المواقع لأغراض إعلانية."
+                  : "Used to track visitors across websites for advertising purposes."
+              }
+            </p>
+          </div>
+          <button
+            role="switch"
+            aria-checked="false"
+            data-cc-toggle="marketing"
+            class="cc-toggle"
+          >
+            <span class="cc-toggle-dot"></span>
+          </button>
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-2 pt-2">
+        <button data-cc="necessary" class="btn btn-ghost text-sm">
+          {locale === "ar" ? "الضرورية فقط" : "Necessary Only"}
+        </button>
+        <button data-cc="save" class="btn btn-primary text-sm">
+          {locale === "ar" ? "حفظ التفضيلات" : "Save Preferences"}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .cookie-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    padding: 1rem;
+    border-top: 1px solid var(--color-secondary-200);
+    background: white;
+    box-shadow: 0 -4px 20px rgb(0 0 0 / 0.1);
+    transform: translateY(100%);
+    opacity: 0;
+    transition:
+      transform 0.35s cubic-bezier(0.33, 1, 0.68, 1),
+      opacity 0.25s ease;
+  }
+
+  @media (min-width: 768px) {
+    .cookie-banner {
+      padding: 1.5rem;
+    }
+  }
+
+  :global(.dark) .cookie-banner {
+    background: var(--color-secondary-900);
+    border-color: var(--color-secondary-700);
+  }
+
+  .cookie-banner[aria-hidden="false"] {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  /* Toggle switch */
+  .cc-toggle {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    width: 2.75rem;
+    height: 1.5rem;
+    border-radius: 9999px;
+    background: var(--color-secondary-300);
+    transition: background 0.2s;
+    cursor: pointer;
+    border: none;
+    padding: 0;
+    flex-shrink: 0;
+  }
+
+  :global(.dark) .cc-toggle {
+    background: var(--color-secondary-600);
+  }
+
+  .cc-toggle[aria-checked="true"] {
+    background: var(--color-primary-600);
+  }
+
+  .cc-toggle-dot {
+    display: block;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 9999px;
+    background: white;
+    transform: translateX(0.25rem);
+    transition: transform 0.2s;
+  }
+
+  .cc-toggle[aria-checked="true"] .cc-toggle-dot {
+    transform: translateX(1.5rem);
+  }
+
+  [dir="rtl"] .cc-toggle-dot {
+    transform: translateX(-0.25rem);
+  }
+
+  [dir="rtl"] .cc-toggle[aria-checked="true"] .cc-toggle-dot {
+    transform: translateX(-1.5rem);
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    var CONSENT_KEY = "cookie-consent";
+    var PREFS_KEY = "cookie-preferences";
+    var banner = document.getElementById("cookie-consent");
+    var main = document.getElementById("cc-main");
+    var customize = document.getElementById("cc-customize");
+    if (!banner) return;
+
+    // Check stored consent
+    var stored = localStorage.getItem(CONSENT_KEY);
+    if (stored) return; // Already consented, stay hidden
+
+    // Show after 800ms
+    setTimeout(function () {
+      banner.style.display = "";
+      // Force reflow before animating
+      banner.offsetHeight;
+      banner.setAttribute("aria-hidden", "false");
+    }, 800);
+
+    function hide() {
+      banner.setAttribute("aria-hidden", "true");
+      setTimeout(function () {
+        banner.style.display = "none";
+      }, 400);
+    }
+
+    function save(type, analytics, marketing) {
+      var prefs = {
+        necessary: true,
+        analytics: !!analytics,
+        marketing: !!marketing,
+        timestamp: Date.now(),
+      };
+      localStorage.setItem(CONSENT_KEY, type);
+      localStorage.setItem(PREFS_KEY, JSON.stringify(prefs));
+      window.dispatchEvent(
+        new CustomEvent("cookie-consent", { detail: prefs }),
+      );
+      hide();
+    }
+
+    banner.addEventListener("click", function (e) {
+      var btn = e.target.closest("[data-cc]");
+      if (!btn) return;
+      var action = btn.getAttribute("data-cc");
+
+      if (action === "accept-all") {
+        save("all", true, true);
+      } else if (action === "necessary") {
+        save("necessary", false, false);
+      } else if (action === "customize") {
+        main.style.display = "none";
+        customize.style.display = "";
+      } else if (action === "close-customize") {
+        customize.style.display = "none";
+        main.style.display = "";
+      } else if (action === "save") {
+        var a = banner.querySelector('[data-cc-toggle="analytics"]');
+        var m = banner.querySelector('[data-cc-toggle="marketing"]');
+        var hasA = a && a.getAttribute("aria-checked") === "true";
+        var hasM = m && m.getAttribute("aria-checked") === "true";
+        save(hasA || hasM ? "all" : "necessary", hasA, hasM);
+      }
+    });
+
+    // Toggle switches
+    banner.addEventListener("click", function (e) {
+      var toggle = e.target.closest("[data-cc-toggle]");
+      if (!toggle) return;
+      var checked = toggle.getAttribute("aria-checked") === "true";
+      toggle.setAttribute("aria-checked", checked ? "false" : "true");
+    });
+  })();
+</script>

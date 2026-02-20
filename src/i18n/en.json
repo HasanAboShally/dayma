@@ -1,0 +1,568 @@
+{
+  "site": {
+    "name": "Dayma",
+    "description": "Your personal worship habit tracker — plan once, stay consistent every day",
+    "tagline": "2 minutes a day"
+  },
+  "nav": {
+    "home": "Home",
+    "today": "Today",
+    "plan": "My Plan",
+    "progress": "Progress",
+    "settings": "Settings"
+  },
+  "landing": {
+    "title": "Your Ramadan, Planned with Purpose",
+    "subtitle": "A calm, spiritually-grounded companion that helps you pick meaningful worship actions and stay consistent — in just 2 minutes a day.",
+    "cta": "Get Started",
+    "cta_secondary": "How It Works",
+    "feature1_title": "Pick Your Actions",
+    "feature1_desc": "Choose from 25 curated worship actions or create your own — start with a pack or customize freely",
+    "feature2_title": "2-Minute Check-In",
+    "feature2_desc": "Check off your actions each day. That's all it takes to stay on track",
+    "feature3_title": "Gentle Progress",
+    "feature3_desc": "Track your consistency without pressure — celebrate every small step",
+    "howItWorks": "How It Works",
+    "step1_title": "Pick Your Actions",
+    "step1_desc": "Choose a starter pack or hand-pick from 25 worship actions",
+    "step2_title": "Track Daily",
+    "step2_desc": "Check off completed actions each day — it takes less than 2 minutes",
+    "step3_title": "See Your Progress",
+    "step3_desc": "Watch your streaks grow and consistency improve over time",
+    "spiritual_note": "\"The most beloved deeds to Allah are those that are consistent, even if they are small.\"",
+    "spiritual_attribution": "Prophet Muhammad ﷺ",
+    "no_signup": "No sign-up required. Your data stays on your device.",
+    "pwa_note": "Works offline. Add to your home screen for the best experience.",
+    "layer1_title": "Daily Basics",
+    "layer1_desc": "5 prayers & fasting — auto-tracked every day",
+    "layer2_title": "Your Commitments",
+    "layer2_desc": "Pick from 25 worship actions — your daily goals",
+    "layer3_title": "Monthly Goals",
+    "layer3_desc": "Bigger goals with targets you aim for all Ramadan",
+    "hex_title": "30-Day Honeycomb",
+    "hex_desc": "Watch your Ramadan come alive — one hex per day, color-coded by progress"
+  },
+  "setup": {
+    "title": "Set Up Your Worship",
+    "subtitle": "Pick the actions you want to track this Ramadan",
+    "quick_start": "Quick Start",
+    "start_tracking": "Start Tracking",
+    "pick_actions": "Daily Actions",
+    "monthly_goals": "Monthly Goals",
+    "empty_today": "No actions yet. Pick some to start tracking!",
+    "basics_title": "Prayer & Fasting Basics",
+    "basics_desc": "These are automatically tracked each day. Toggle off any you want to skip.",
+    "monthly_desc": "Set goals with targets for the whole month. You can exceed your targets!",
+    "monthly_count": "monthly goals",
+    "date_title": "When does your Ramadan start?",
+    "date_desc": "The start date may vary by your location and moon sighting.",
+    "date_feb18": "Wed, Feb 18",
+    "date_feb19": "Thu, Feb 19",
+    "step": "Step",
+    "of": "of",
+    "step_date": "Start Date",
+    "step_daily": "Daily Habits",
+    "step_monthly": "Monthly Goals",
+    "step_summary": "Ready!",
+    "daily_title": "Choose Your Daily Habits",
+    "daily_subtitle": "Pick what you'd like to do every day. We recommend about 5.",
+    "monthly_title": "Set Monthly Goals",
+    "monthly_subtitle": "Tap to set how many times this Ramadan. Aim high!",
+    "summary_title": "You're All Set!",
+    "summary_subtitle": "Here's your Ramadan plan",
+    "summary_basics": "Prayers & Fasting tracked daily",
+    "summary_habits": "daily habits chosen",
+    "summary_goals": "monthly goals set",
+    "summary_encouragement": "May Allah accept your worship and make this your best Ramadan yet.",
+    "summary_hadith": "\"The most beloved deeds to Allah are those that are consistent, even if they are small.\"",
+    "summary_hadith_source": "— Prophet Muhammad ﷺ",
+    "bismillah": "بسم الله — Let's Begin",
+    "add_custom": "Add Custom"
+  },
+  "packs": {
+    "beginner": {
+      "name": "Gentle Start",
+      "description": "5 essential actions for a consistent Ramadan"
+    },
+    "balanced": {
+      "name": "Balanced Path",
+      "description": "8 actions covering all key worship areas"
+    },
+    "devoted": {
+      "name": "Full Devotion",
+      "description": "12 actions for maximum spiritual growth"
+    }
+  },
+  "categories": {
+    "quran": "Quran",
+    "prayer": "Prayer",
+    "dhikr": "Dhikr",
+    "charity": "Charity",
+    "dua": "Dua",
+    "fasting": "Fasting",
+    "learning": "Learning"
+  },
+  "tasks": {
+    "quran": {
+      "read": {
+        "title": "Read Quran",
+        "description": "Daily Quran recitation"
+      }
+    },
+    "prayer": {
+      "taraweeh": {
+        "title": "Taraweeh Prayer",
+        "description": "Night prayer during Ramadan"
+      },
+      "tahajjud": {
+        "title": "Tahajjud",
+        "description": "Late night prayer before Fajr"
+      }
+    },
+    "dhikr": {
+      "morning": {
+        "title": "Morning Adhkar",
+        "description": "Morning remembrance of Allah"
+      }
+    },
+    "charity": {
+      "give": {
+        "title": "Give Charity",
+        "description": "Give sadaqah, feed someone, or do a good deed"
+      }
+    },
+    "dua": {
+      "iftar": {
+        "title": "Dua at Iftar",
+        "description": "Make dua at the time of breaking fast"
+      }
+    },
+    "fasting": {
+      "guard": {
+        "title": "Guard Your Fast",
+        "description": "Protect your fast from idle speech and anger"
+      }
+    },
+    "learning": {
+      "study": {
+        "title": "Islamic Learning",
+        "description": "Read tafsir, seerah, or attend a lecture"
+      }
+    }
+  },
+  "units": {
+    "pages": "pages",
+    "rakaat": "rak'at",
+    "minutes": "min"
+  },
+  "hex": {
+    "basics_done": "Basics Done",
+    "daily_done": "Daily Done",
+    "completion": "Completion",
+    "your_ramadan": "Your Ramadan Journey",
+    "legend_empty": "Not started",
+    "legend_partial": "Started",
+    "legend_good": "Good",
+    "legend_perfect": "Perfect",
+    "open_today": "Log Today",
+    "today": "Today",
+    "complete": "complete"
+  },
+  "day": {
+    "basics_title": "Prayer & Fasting",
+    "completed": "completed",
+    "daily_title": "Daily Commitments",
+    "monthly_title": "Monthly Goals",
+    "reflection_title": "Reflection",
+    "today": "Today",
+    "future_message": "This day hasn't arrived yet. Check back then!",
+    "reflection_placeholder": "Any reflections on today? (optional)"
+  },
+
+  "today": {
+    "title": "Today",
+    "greeting_morning": "Good morning",
+    "greeting_afternoon": "Good afternoon",
+    "greeting_evening": "Good evening",
+    "day_label": "Day",
+    "of_ramadan": "of Ramadan",
+    "phase_first": "First 10 — Mercy",
+    "phase_middle": "Middle 10 — Forgiveness",
+    "phase_last": "Last 10 — Freedom from Fire",
+    "morning_intent": "Set Your Intent",
+    "morning_intent_sub": "What will you focus on today?",
+    "evening_checkin": "Evening Check-In",
+    "evening_checkin_sub": "How did your day go?",
+    "reflection_placeholder": "Any reflections? (optional)",
+    "check_in": "Complete Check-In",
+    "checked_in": "Checked In ✓",
+    "tasks_completed": "tasks completed",
+    "all_done": "All done! MashaAllah!",
+    "keep_going": "You're doing great, keep going!"
+  },
+  "progress": {
+    "title": "Progress",
+    "streak": "Day Streak",
+    "longest_streak": "Longest Streak",
+    "consistency": "Consistency",
+    "completed": "Completed",
+    "week": "Week",
+    "overall": "Overall Progress",
+    "days_left": "days left",
+    "phase": "Current Phase",
+    "heatmap_title": "30-Day Ramadan Heatmap",
+    "breakdown_title": "Category Breakdown",
+    "basics_label": "Basics",
+    "daily_label": "Daily",
+    "monthly_label": "Monthly",
+    "bests_title": "Personal Bests",
+    "best_day": "Best Day",
+    "perfect_days": "Perfect Days",
+    "days_unit": "days",
+    "of_ramadan": "of Ramadan",
+    "subtitle": "Your Ramadan journey so far",
+    "current_streak": "Current Streak",
+    "total_completed": "Total Completed",
+    "days_active": "Days Active",
+    "category_title": "By Category",
+    "no_goals": "No monthly goals set yet",
+    "consistency_title": "Your Consistency",
+    "consistency_message": "You've been active for {days} days, completed {total} actions, and have a {streak}-day streak. Keep going!"
+  },
+  "encouragement": {
+    "streak_3": "3 days strong! Consistency is key.",
+    "streak_7": "A full week! The Prophet ﷺ said consistent deeds are most beloved.",
+    "streak_14": "Two weeks of dedication! SubhanAllah.",
+    "streak_21": "21 days — a habit is forming!",
+    "recovery": "Every new moment is a chance to return. Allah loves those who repent.",
+    "completion_high": "MashaAllah! Your dedication is inspiring.",
+    "completion_low": "Even a small deed done sincerely is weighty with Allah.",
+    "last_ten": "The last 10 nights are here! Seek Laylatul Qadr.",
+    "weekly_levelup": "New week, new level! Keep building on what you've started."
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "manage_actions": "Manage Actions",
+    "reset_plan": "Reset All Data",
+    "reset_confirm": "This will erase all your data and progress. Are you sure?",
+    "export_data": "Export Data",
+    "import_data": "Import Data",
+    "about": "About",
+    "about_text": "Ramadan Companion helps you plan and stay consistent in your Ramadan worship. Built with love and sincerity.",
+    "daily_reminder": "Daily Reminder",
+    "daily_reminder_desc": "Get a check-in reminder every day at 9 PM",
+    "reminder_enabled": "Reminder enabled",
+    "reminder_denied": "Notification permission denied. Please enable it in your browser settings.",
+    "reminder_unsupported": "Notifications are not supported in this browser."
+  },
+  "common": {
+    "day": "Day",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "retry": "Try Again",
+    "back": "Back",
+    "close": "Close",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "next": "Next",
+    "previous": "Previous",
+    "done": "Done",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "errors": {
+    "404": {
+      "title": "Page Not Found",
+      "description": "This page doesn't exist.",
+      "cta": "Go Home"
+    },
+    "500": {
+      "title": "Something Went Wrong",
+      "description": "Please try again.",
+      "cta": "Retry"
+    }
+  },
+  "footer": {
+    "copyright": "Ramadan Companion — Built with sincerity",
+    "privacy": "Your data stays on your device",
+    "privacy_link": "Privacy Policy",
+    "terms_link": "Terms of Service",
+    "about_link": "About"
+  },
+  "theme": {
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System",
+    "toggle": "Toggle theme"
+  },
+  "accessibility": {
+    "skipToContent": "Skip to main content",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "toggleTheme": "Toggle dark mode",
+    "changeLanguage": "Change language"
+  },
+  "basics": {
+    "fajr": "Fajr Prayer",
+    "dhuhr": "Dhuhr Prayer",
+    "asr": "Asr Prayer",
+    "maghrib": "Maghrib Prayer",
+    "isha": "Isha Prayer",
+    "fasting": "Fasting"
+  },
+  "monthly": {
+    "charity": "Major Charity",
+    "charity_desc": "Make a significant donation, sponsor an orphan, or feed families",
+    "quran_khatm": "Complete Quran",
+    "quran_khatm_desc": "Complete a full khatmah of the Quran during Ramadan",
+    "family_iftar": "Family Iftars",
+    "family_iftar_desc": "Host family or neighbors for iftar",
+    "lecture": "Attend Lectures",
+    "lecture_desc": "Attend lectures at the masjid or online",
+    "visit_sick": "Visit the Sick",
+    "visit_sick_desc": "Visit sick people or call to check on them",
+    "itikaf": "I'tikaf Sessions",
+    "itikaf_desc": "I'tikaf between Fajr and sunrise or during the last 10",
+    "feed_fasting": "Feed Fasting People",
+    "feed_fasting_desc": "Break someone's fast, even with dates and water",
+    "night_prayer": "Night Prayers",
+    "night_prayer_desc": "Pray qiyam al-layl in the last third of the night",
+    "target": "Target",
+    "times": "times",
+    "progress": "progress",
+    "exceeded": "Exceeded! MashaAllah!",
+    "of_target": "of"
+  },
+  "laylatul_qadr": {
+    "banner": "The Last 10 Nights — Seek Laylatul Qadr!",
+    "odd_night": "Odd Night ✦",
+    "label": "Laylatul Qadr"
+  },
+  "banner": {
+    "suhoor": "Time for Suhoor — nourish your body and soul before Fajr",
+    "iftar": "Almost Iftar time! Remember your dua at the moment of breaking fast",
+    "laylatul_qadr": "Tonight could be Laylatul Qadr — make it count with extra worship!",
+    "streak_risk": "Your {streak}-day streak is at risk! Don't forget to check in today",
+    "ramadan_mubarak": "Ramadan Mubarak! May this month bring you closer to Allah ﷻ",
+    "streak_milestone": "{streak}-day streak! MashaAllah, consistency is key!",
+    "halfway": "You're halfway through Ramadan! Keep the momentum going!"
+  },
+  "share": {
+    "button": "Share",
+    "download": "Download"
+  },
+  "eid": {
+    "title": "Eid Mubarak! 🌙",
+    "subtitle": "You've completed your Ramadan journey. May Allah accept your worship.",
+    "in_numbers": "Your Ramadan in Numbers",
+    "avg_completion": "Avg. Completion",
+    "perfect_days": "Perfect Days",
+    "longest_streak": "Longest Streak",
+    "total_completed": "Actions Completed",
+    "prayer_rate": "Prayer & Fasting",
+    "daily_rate": "Daily Commitments",
+    "closing_verse": "\"Our Lord, accept from us. Indeed, You are the Hearing, the Knowing.\"",
+    "closing_ref": "Quran 2:127",
+    "greeting": "عيد مبارك — Eid Mubarak"
+  },
+  "gallery": {
+    "title": "Action Gallery",
+    "subtitle": "Browse worship actions and add them to your daily plan",
+    "search_placeholder": "Search actions...",
+    "all": "All",
+    "actions_available": "actions",
+    "added": "added",
+    "add": "Add",
+    "remove": "Remove",
+    "add_action": "Add Worship Action",
+    "create_custom": "Create Custom",
+    "my_actions": "My Actions",
+    "no_results": "No actions found. Try a different search.",
+    "nudge_soft": "You have quite a few actions! Remember: consistency beats quantity. The Prophet ﷺ said the most beloved deeds are those done regularly, even if small.",
+    "nudge_hard": "That's a lot of actions! Consider removing some to stay realistic. It's better to do a few consistently than many sporadically.",
+    "create_title": "Create Custom Action",
+    "field_title": "Title",
+    "field_title_placeholder": "e.g. Visit the sick",
+    "field_description": "Description (optional)",
+    "field_description_placeholder": "e.g. Visit a sick person or call them",
+    "field_category": "Category",
+    "field_target": "Target (optional)",
+    "field_unit": "Unit",
+    "field_unit_placeholder": "e.g. times, minutes",
+    "save_action": "Add to My Plan",
+    "taraweeh": {
+      "title": "Taraweeh Prayer",
+      "desc": "Pray Taraweeh at the masjid or at home"
+    },
+    "tahajjud": {
+      "title": "Tahajjud Prayer",
+      "desc": "Night prayer before Fajr"
+    },
+    "quran_read": {
+      "title": "Read Quran",
+      "desc": "Daily Quran recitation"
+    },
+    "morning_adhkar": {
+      "title": "Morning Adhkar",
+      "desc": "Morning remembrance after Fajr"
+    },
+    "dua_iftar": {
+      "title": "Dua at Iftar",
+      "desc": "Supplicate at the time of breaking fast"
+    },
+    "daily_charity": {
+      "title": "Daily Charity",
+      "desc": "Give charity every day, even if small"
+    },
+    "takbirat_ihram": {
+      "title": "Catch Takbirat al-Ihram",
+      "desc": "Arrive early to catch the opening takbeer with the imam"
+    },
+    "jamaah_prayer": {
+      "title": "Pray in Jama'ah",
+      "desc": "Perform the five daily prayers in congregation at the masjid"
+    },
+    "duha_prayer": {
+      "title": "Duha Prayer",
+      "desc": "Pray Duha after sunrise"
+    },
+    "fajr_sunrise": {
+      "title": "Stay After Fajr Until Sunrise",
+      "desc": "Remain in the masjid after Fajr until sunrise, then pray two rak'at"
+    },
+    "itikaf": {
+      "title": "I'tikaf",
+      "desc": "Seclude yourself in the masjid for worship and remembrance"
+    },
+    "witr_prayer": {
+      "title": "Witr Prayer",
+      "desc": "Pray Witr before sleeping or at the end of the night"
+    },
+    "sunnah_rawatib": {
+      "title": "Sunnah Rawatib",
+      "desc": "Maintain the regular sunnah prayers before and after obligatory prayers"
+    },
+    "qiyam_layl": {
+      "title": "Qiyam al-Layl",
+      "desc": "Night prayer in the last third of the night"
+    },
+    "quran_memorize": {
+      "title": "Memorize Quran",
+      "desc": "Memorize new verses from the Quran"
+    },
+    "quran_review": {
+      "title": "Review Memorized Quran",
+      "desc": "Review previously memorized portions"
+    },
+    "quran_tafsir": {
+      "title": "Study Tafsir",
+      "desc": "Read tafsir for reflection and understanding"
+    },
+    "evening_adhkar": {
+      "title": "Evening Adhkar",
+      "desc": "Evening remembrance after Asr prayer"
+    },
+    "istighfar": {
+      "title": "Istighfar 100 Times",
+      "desc": "Seek forgiveness 100 times a day"
+    },
+    "salawat": {
+      "title": "Salawat upon the Prophet ﷺ",
+      "desc": "Increase in sending blessings upon Prophet Muhammad ﷺ"
+    },
+    "post_prayer_dhikr": {
+      "title": "Post-Prayer Dhikr",
+      "desc": "SubhanAllah 33, Alhamdulillah 33, Allahu Akbar 33 after each prayer"
+    },
+    "feed_fasting": {
+      "title": "Feed a Fasting Person",
+      "desc": "Break someone's fast, even with a date or water"
+    },
+    "smile_kindness": {
+      "title": "Smile & Kindness",
+      "desc": "Smiling at others is charity"
+    },
+    "dua_list": {
+      "title": "Personal Dua List",
+      "desc": "Make dua from your personal list of important supplications"
+    },
+    "dua_parents": {
+      "title": "Dua for Parents",
+      "desc": "Pray for your parents with mercy and forgiveness"
+    },
+    "dua_sujood": {
+      "title": "Dua in Sujood",
+      "desc": "Increase supplication in prostration — the closest you are to your Lord"
+    },
+    "suhoor_sunnah": {
+      "title": "Delay Suhoor",
+      "desc": "Delay suhoor as close to Fajr as possible"
+    },
+    "iftar_hasten": {
+      "title": "Hasten Iftar",
+      "desc": "Break fast at the earliest time, preferably with dates"
+    },
+    "lower_gaze": {
+      "title": "Lower the Gaze",
+      "desc": "Guard your gaze and stay away from what harms your fast"
+    },
+    "attend_lecture": {
+      "title": "Attend a Lecture",
+      "desc": "Attend an Islamic lecture at the masjid or online"
+    },
+    "hadith_daily": {
+      "title": "Daily Hadith",
+      "desc": "Read one hadith, reflect on it, and act upon it"
+    }
+  },
+  "privacy_page": {
+    "title": "Privacy Policy",
+    "last_updated": "Last updated: March 2025",
+    "intro": "Ramadan Companion is designed with privacy at its core. We believe your worship data is personal and should stay that way.",
+    "local_storage_title": "Your Data Stays on Your Device",
+    "local_storage_desc": "All your worship data, habits, goals, and progress are stored exclusively in your browser's local storage. We do not send, collect, or store any of your personal data on any server.",
+    "no_accounts_title": "No Accounts Required",
+    "no_accounts_desc": "Ramadan Companion does not require registration, login, or any personal information to use. There are no user accounts, emails, or passwords.",
+    "no_tracking_title": "No Tracking",
+    "no_tracking_desc": "We do not use cookies for tracking. If analytics are enabled, they collect only anonymous usage data (page views, feature usage) with no personally identifiable information.",
+    "no_third_party_title": "No Third-Party Data Sharing",
+    "no_third_party_desc": "We do not share, sell, or transfer any data to third parties. Your worship journey is entirely private.",
+    "pwa_title": "Progressive Web App",
+    "pwa_desc": "Ramadan Companion works offline as a Progressive Web App (PWA). Once installed, it functions entirely on your device without requiring an internet connection.",
+    "export_title": "Data Export & Deletion",
+    "export_desc": "You can export your data anytime from Settings. To delete all data, use the Reset option in Settings or simply clear your browser's local storage.",
+    "contact_title": "Contact",
+    "contact_desc": "If you have any questions about this privacy policy, feel free to reach out via our GitHub repository."
+  },
+  "terms_page": {
+    "title": "Terms of Service",
+    "last_updated": "Last updated: March 2025",
+    "intro": "By using Ramadan Companion, you agree to these simple terms.",
+    "usage_title": "Usage",
+    "usage_desc": "Ramadan Companion is a free tool designed to help you plan and track your Ramadan worship. You may use it for personal, non-commercial purposes.",
+    "as_is_title": "Provided As-Is",
+    "as_is_desc": "This app is provided free of charge, as-is, without any warranties. We do our best to keep it reliable, but we cannot guarantee uninterrupted availability.",
+    "data_title": "Your Data",
+    "data_desc": "All data is stored locally on your device. You are responsible for your own data. We recommend using the Export feature in Settings to back up important data.",
+    "content_title": "Religious Content",
+    "content_desc": "The worship actions and spiritual content provided are general guidance. We encourage you to consult with knowledgeable scholars for specific religious rulings.",
+    "changes_title": "Changes to Terms",
+    "changes_desc": "We may update these terms from time to time. Continued use of the app constitutes acceptance of the updated terms."
+  },
+  "about_page": {
+    "title": "About Ramadan Companion",
+    "intro": "Ramadan Companion is a free, open-source tool built to help Muslims plan and stay consistent with their worship during Ramadan.",
+    "mission_title": "Our Mission",
+    "mission_desc": "We believe that Ramadan is a precious opportunity for spiritual growth. Our goal is to make it easier for everyone to set meaningful worship goals and maintain consistency throughout the blessed month.",
+    "how_it_works_title": "How It Works",
+    "how_it_works_desc": "Choose from 25+ curated worship actions or create your own. Check off your daily habits in just 2 minutes. Track your progress with a beautiful hex grid that fills in as you go.",
+    "privacy_first_title": "Privacy First",
+    "privacy_first_desc": "Your worship data never leaves your device. No accounts, no servers, no tracking. Just you and your ibadah.",
+    "open_source_title": "Open Source",
+    "open_source_desc": "Ramadan Companion is built with love and shared freely. Contributions and feedback are welcome.",
+    "tech_title": "Built With",
+    "tech_desc": "Astro, React, Tailwind CSS, and deployed on Cloudflare. Designed to be fast, accessible, and work offline as a PWA."
+  }
+}

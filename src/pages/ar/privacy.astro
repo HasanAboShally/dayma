@@ -1,0 +1,76 @@
+---
+export const prerender = true;
+import type { Locale } from "@/i18n/utils";
+import { useTranslations } from "@/i18n/utils";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+const locale: Locale = "ar";
+const t = useTranslations(locale);
+---
+
+<BaseLayout
+  title={t("privacy_page.title")}
+  description={t("privacy_page.intro")}
+>
+  <div class="mx-auto max-w-2xl px-5 pb-16 pt-12" dir="rtl">
+    <a
+      href={`/${locale}/`}
+      class="mb-6 inline-flex items-center gap-1 text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400"
+    >
+      &rarr; {t("nav.home")}
+    </a>
+
+    <h1
+      class="font-heading text-3xl font-bold text-secondary-900 dark:text-white"
+    >
+      {t("privacy_page.title")}
+    </h1>
+    <p class="mt-2 text-sm text-secondary-400">
+      {t("privacy_page.last_updated")}
+    </p>
+    <p
+      class="mt-6 text-base leading-relaxed text-secondary-600 dark:text-secondary-400"
+    >
+      {t("privacy_page.intro")}
+    </p>
+
+    <div class="mt-10 space-y-8">
+      {
+        (
+          [
+            ["local_storage_title", "local_storage_desc"],
+            ["no_accounts_title", "no_accounts_desc"],
+            ["no_tracking_title", "no_tracking_desc"],
+            ["no_third_party_title", "no_third_party_desc"],
+            ["pwa_title", "pwa_desc"],
+            ["export_title", "export_desc"],
+            ["contact_title", "contact_desc"],
+          ] as const
+        ).map(([titleKey, descKey]) => (
+          <section>
+            <h2 class="font-heading text-lg font-semibold text-secondary-900 dark:text-white">
+              {t(`privacy_page.${titleKey}`)}
+            </h2>
+            <p class="mt-2 text-sm leading-relaxed text-secondary-600 dark:text-secondary-400">
+              {t(`privacy_page.${descKey}`)}
+            </p>
+          </section>
+        ))
+      }
+    </div>
+
+    <div
+      class="mt-12 border-t border-secondary-200 pt-6 dark:border-secondary-800"
+    >
+      <div class="flex flex-wrap gap-4 text-sm text-secondary-400">
+        <a href={`/${locale}/terms`} class="hover:text-primary-600"
+          >{t("footer.terms_link")}</a
+        >
+        <a href={`/${locale}/about`} class="hover:text-primary-600"
+          >{t("footer.about_link")}</a
+        >
+      </div>
+      <p class="mt-3 text-xs text-secondary-400">{t("footer.copyright")}</p>
+    </div>
+  </div>
+</BaseLayout>

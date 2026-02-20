@@ -1,0 +1,14 @@
+# Redirect www to apex domain (update with your domain)
+
+# https://www.example.com/* https://example.com/:splat 301
+
+# Old app routes → new /app/ routes (301 permanent)
+
+/en/today /en/app/today 301
+/en/progress /en/app/progress 301
+/en/setup /en/app/setup 301
+/en/settings /en/app/settings 301
+/ar/today /ar/app/today 301
+/ar/progress /ar/app/progress 301
+/ar/setup /ar/app/setup 301
+/ar/settings /ar/app/settings 301
