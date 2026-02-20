@@ -15,7 +15,7 @@ const t = useTranslations(locale);
     <LoadingSkeleton variant="landing" locale={locale} />
   </div>
   <div id="react-root" style="display:none">
-    <Landing client:idle locale={locale} />
+    <Landing client:load locale={locale} switchLocaleHref="/" />
   </div>
   <script is:inline>
     {

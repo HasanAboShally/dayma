@@ -20,7 +20,7 @@ const t = useTranslations(locale);
     <LoadingSkeleton variant="progress" locale={locale} />
   </div>
   <div id="react-root" style="display:none">
-    <ProgressView client:idle locale={locale} />
+    <ProgressView client:load locale={locale} />
   </div>
   <SideDrawer client:idle locale={locale} currentPath={Astro.url.pathname} />
   <script is:inline>

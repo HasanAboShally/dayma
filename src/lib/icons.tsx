@@ -36,6 +36,7 @@ import {
   EyeOff,
   Flag,
   Flame,
+  Globe,
   GraduationCap,
   Hand,
   HandHeart,
@@ -189,6 +190,7 @@ export type IconName =
   | "utensils-crossed"
   | "graduation-cap"
   | "flag"
+  | "globe"
   | "plus"
   | "minus";
 
@@ -309,6 +311,7 @@ const ICON_MAP: Record<IconName, ComponentType<LucideProps>> = {
   "utensils-crossed": UtensilsCrossed,
   "graduation-cap": GraduationCap,
   flag: Flag,
+  globe: Globe,
   plus: Plus,
   minus: Minus,
 };

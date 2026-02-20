@@ -21,7 +21,7 @@ const t = useTranslations(locale);
     <LoadingSkeleton variant="hexgrid" locale={locale} />
   </div>
   <div id="react-root" style="display:none">
-    <HexGrid client:idle locale={locale} />
+    <HexGrid client:load locale={locale} />
   </div>
   <SideDrawer client:idle locale={locale} currentPath={Astro.url.pathname} />
   <script is:inline>

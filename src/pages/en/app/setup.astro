@@ -20,7 +20,7 @@ const t = useTranslations(locale);
     <LoadingSkeleton variant="setup" locale={locale} />
   </div>
   <div id="react-root" style="display:none">
-    <SetupView client:idle locale={locale} />
+    <SetupView client:load locale={locale} />
   </div>
   <SideDrawer client:idle locale={locale} currentPath={Astro.url.pathname} />
   <script is:inline>

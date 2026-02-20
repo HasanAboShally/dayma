@@ -11,9 +11,10 @@ import { useEffect, useState } from "react";
 
 interface LandingProps {
   locale: AppLocale;
+  switchLocaleHref?: string;
 }
 
-export function Landing({ locale }: LandingProps) {
+export function Landing({ locale, switchLocaleHref }: LandingProps) {
   const t = createTranslator(locale);
   const isRTL = locale === "ar";
 
@@ -36,6 +37,18 @@ export function Landing({ locale }: LandingProps) {
     >
       {/* ── Hero ── */}
       <section className="relative overflow-hidden px-5 pb-16 pt-20">
+        {/* Language switcher */}
+        {switchLocaleHref && (
+          <div className="absolute top-5 end-5 z-10">
+            <a
+              href={switchLocaleHref}
+              className="inline-flex items-center gap-1.5 rounded-full border border-secondary-200 bg-white/80 px-3 py-1.5 text-xs font-medium text-secondary-600 shadow-sm backdrop-blur-sm transition-colors hover:bg-white hover:text-primary-600 dark:border-secondary-700 dark:bg-secondary-900/80 dark:text-secondary-300 dark:hover:text-primary-400"
+            >
+              <Icon name="globe" className="h-3.5 w-3.5" />
+              {isRTL ? "English" : "العربية"}
+            </a>
+          </div>
+        )}
         {/* Background decoration */}
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
           <div className="absolute -top-24 end-[-80px] h-64 w-64 rounded-full bg-primary-500/10 blur-3xl" />
