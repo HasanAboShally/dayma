@@ -3,6 +3,7 @@ import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
+import { fileURLToPath } from "node:url";
 
 const isProd = process.env.NODE_ENV === "production";
 
@@ -81,6 +82,16 @@ export default defineConfig({
     ],
     resolve: {
       dedupe: ["react", "react-dom"],
+      alias: [
+        // Force react-dom/server to use the edge build (uses setTimeout)
+        // instead of the browser build (uses MessageChannel, unavailable in Workers)
+        {
+          find: "react-dom/server",
+          replacement: fileURLToPath(
+            new URL("./node_modules/react-dom/server.edge.js", import.meta.url),
+          ),
+        },
+      ],
     },
     optimizeDeps: {
       include: [
@@ -102,6 +113,13 @@ export default defineConfig({
     },
     ssr: {
       noExternal: ["clsx", "tailwind-merge"],
+      resolve: {
+        // IMPORTANT: 'workerd' must come before 'browser'/'worker' so React 19
+        // resolves to server.edge.js (uses setTimeout) instead of
+        // server.browser.js (uses MessageChannel, unavailable in Workers)
+        conditions: ["workerd", "worker", "browser", "import", "module", "default"],
+        externalConditions: ["workerd", "worker", "node", "import", "module", "default"],
+      },
     },
   },
 });
