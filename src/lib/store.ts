@@ -56,12 +56,15 @@ export function loadState(): AppState {
   }
 }
 
-export function saveState(state: AppState): void {
-  if (typeof window === "undefined") return;
+export function saveState(state: AppState): boolean {
+  if (typeof window === "undefined") return true;
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    return true;
   } catch {
-    // Storage full or unavailable
+    // Storage full or unavailable — emit event for UI to handle
+    window.dispatchEvent(new CustomEvent("dayma:storage-error"));
+    return false;
   }
 }
 

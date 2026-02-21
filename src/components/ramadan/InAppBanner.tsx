@@ -5,8 +5,10 @@
 
 import { createTranslator } from "@/i18n/client";
 import type { AppLocale, AppState } from "@/lib/app-types";
+import { trackEvent, AnalyticsEvents } from "@/lib/analytics";
 import { getDateString } from "@/lib/gallery";
 import { Icon } from "@/lib/icons";
+import { getPrayerWindows } from "@/lib/prayer-times";
 import {
   calculateStreak,
   getCurrentRamadanDay,
@@ -38,8 +40,11 @@ function getBanners(state: AppState, t: (key: string) => string): BannerType[] {
   const todayStats = getDayStats(state, getDateString());
   const streak = calculateStreak(state);
 
-  // Suhoor reminder (2am - 6am — covers most latitudes)
-  if (hour >= 2 && hour < 6) {
+  // Use prayer-time-aware windows instead of hardcoded hours
+  const prayerWindows = getPrayerWindows(now);
+
+  // Suhoor reminder (based on calculated Fajr time)
+  if (hour >= prayerWindows.suhoorStart && hour < prayerWindows.suhoorEnd) {
     banners.push({
       id: "suhoor",
       icon: "🌙",
@@ -49,8 +54,8 @@ function getBanners(state: AppState, t: (key: string) => string): BannerType[] {
     });
   }
 
-  // Iftar time (4pm - 8pm — covers most latitudes)
-  if (hour >= 16 && hour < 20) {
+  // Iftar time (based on calculated Maghrib time)
+  if (hour >= prayerWindows.iftarStart && hour < prayerWindows.iftarEnd) {
     banners.push({
       id: "iftar",
       icon: "🌅",
@@ -152,9 +157,12 @@ export function InAppBanner({ locale, state }: BannerProps) {
           {banner.message}
         </p>
         <button
-          onClick={() => setDismissed((s) => new Set([...s, banner.id]))}
+          onClick={() => {
+            setDismissed((s) => new Set([...s, banner.id]));
+            trackEvent(AnalyticsEvents.BANNER_DISMISSED, { banner: banner.id });
+          }}
           className="rounded-lg p-1 text-white/60 transition-colors hover:text-white"
-          aria-label="Dismiss"
+          aria-label={t("accessibility.dismissBanner")}
         >
           <Icon name="x" className="h-3 w-3" />
         </button>

@@ -44,6 +44,24 @@ const structuredData = {
   description: metaDescription,
   inLanguage: lang,
 };
+
+// SoftwareApplication structured data for app-like discoverability
+const appStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: siteTitle,
+  description: metaDescription,
+  url: Astro.site?.href || currentURL,
+  applicationCategory: "LifestyleApplication",
+  operatingSystem: "Any",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "USD",
+  },
+  inLanguage: ["en", "ar"],
+  browserRequirements: "Requires a modern web browser with JavaScript enabled",
+};
 ---
 
 <!doctype html>
@@ -112,6 +130,7 @@ const structuredData = {
 
     <!-- Structured Data -->
     <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+    <script type="application/ld+json" set:html={JSON.stringify(appStructuredData)} />
 
     <!-- Theme color -->
     <meta name="theme-color" content="#059669" />

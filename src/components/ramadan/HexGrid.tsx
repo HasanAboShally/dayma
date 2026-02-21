@@ -21,6 +21,10 @@ import {
   loadState,
   saveState,
 } from "@/lib/store";
+import { trackEvent, AnalyticsEvents } from "@/lib/analytics";
+import { showToast } from "@/components/ui/Toast";
+import { useFocusTrap } from "@/hooks/useFocusTrap";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   lazy,
@@ -32,6 +36,9 @@ import {
   useState,
 } from "react";
 import { InAppBanner } from "./InAppBanner";
+import { QuranAudio } from "./QuranAudio";
+import { OnboardingTour } from "./OnboardingTour";
+import { ToastContainer } from "@/components/ui/Toast";
 
 // Lazy-load heavy components only needed on interaction or special state
 const DayDetail = lazy(() =>
@@ -154,6 +161,7 @@ interface DayNodeProps {
   isSelected: boolean;
   onTap: (hex: HexDay) => void;
   todayPercent: number;
+  ariaLabel: string;
 }
 
 function DayNode({
@@ -162,6 +170,7 @@ function DayNode({
   isSelected,
   onTap,
   todayPercent,
+  ariaLabel,
 }: DayNodeProps) {
   const clickable = hex.status !== "future";
 
@@ -191,6 +200,7 @@ function DayNode({
         type="button"
         onClick={() => clickable && onTap(hex)}
         disabled={!clickable}
+        aria-label={ariaLabel}
         className={nodeClasses(hex.status, isSelected, clickable)}
         style={nodeInlineStyle(hex.status)}
       >
@@ -439,9 +449,20 @@ interface HexGridProps {
 export function HexGrid({ locale }: HexGridProps) {
   const t = createTranslator(locale);
   const isRTL = locale === "ar";
+  const prefersReducedMotion = useReducedMotion();
   const [state, setState] = useState(() => loadState());
   const [selectedHex, setSelectedHex] = useState<HexDay | null>(null);
   const todayRef = useRef<HTMLDivElement>(null);
+  const dayDetailTrapRef = useFocusTrap<HTMLDivElement>(!!selectedHex);
+
+  // Listen for storage errors and show toast
+  useEffect(() => {
+    const handler = () => {
+      showToast(t("toast.storageFull"), "warning", 5000);
+    };
+    window.addEventListener("dayma:storage-error", handler);
+    return () => window.removeEventListener("dayma:storage-error", handler);
+  }, [t]);
 
   const persist = useCallback((next: typeof state) => {
     setState(next);
@@ -487,6 +508,7 @@ export function HexGrid({ locale }: HexGridProps) {
     if (typeof localStorage !== "undefined" && !localStorage.getItem(key)) {
       setTimeout(() => setShowPhaseCeremony(phase), 800);
       localStorage.setItem(key, "1");
+      trackEvent(AnalyticsEvents.PHASE_CEREMONY_VIEWED, { phase });
     }
   }, [currentDay]);
 
@@ -529,12 +551,12 @@ export function HexGrid({ locale }: HexGridProps) {
   useEffect(() => {
     const timer = setTimeout(() => {
       todayRef.current?.scrollIntoView({
-        behavior: "smooth",
+        behavior: prefersReducedMotion ? "auto" : "smooth",
         block: "center",
       });
     }, 300);
     return () => clearTimeout(timer);
-  }, []);
+  }, [prefersReducedMotion]);
 
   const handleTap = useCallback(
     (hex: HexDay) => {
@@ -542,6 +564,7 @@ export function HexGrid({ locale }: HexGridProps) {
       const withEntry = ensureDayEntry(state, hex.date);
       if (withEntry !== state) persist(withEntry);
       setSelectedHex(hex);
+      trackEvent(AnalyticsEvents.DAY_OPENED, { day: hex.day, status: hex.status });
     },
     [state, persist],
   );
@@ -659,9 +682,12 @@ export function HexGrid({ locale }: HexGridProps) {
             &ldquo;{isRTL ? dailyContent.verse.ar : dailyContent.verse.en}
             &rdquo;
           </p>
-          <p className="mt-1.5 text-center text-xs font-semibold text-secondary-400">
-            — {dailyContent.verse.ref}
-          </p>
+          <div className="mt-1.5 flex items-center justify-center gap-2">
+            <p className="text-xs font-semibold text-secondary-400">
+              — {dailyContent.verse.ref}
+            </p>
+            <QuranAudio locale={locale} verseRef={dailyContent.verse.ref} />
+          </div>
           {/* Daily hadith — previously hidden, now surfaced */}
           <div className="mt-3 border-t border-secondary-200/50 pt-3 dark:border-secondary-700/50">
             <p
@@ -682,7 +708,7 @@ export function HexGrid({ locale }: HexGridProps) {
         {/* Contextual encouragement message */}
         {encouragementMsg && (
           <motion.div
-            initial={{ opacity: 0, y: 6 }}
+            initial={prefersReducedMotion ? false : { opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
             className="mt-3 rounded-2xl bg-white/50 px-4 py-3 text-center dark:bg-secondary-800/30"
           >
@@ -716,6 +742,8 @@ export function HexGrid({ locale }: HexGridProps) {
         <div
           className="relative mx-auto overflow-hidden"
           style={{ width: CONTAINER_W, maxWidth: "100%", height: totalH }}
+          role="group"
+          aria-label={t("accessibility.journeyGrid")}
         >
           {/* Decorative elements */}
           <Decorations totalH={totalH} />
@@ -779,6 +807,14 @@ export function HexGrid({ locale }: HexGridProps) {
           {positions.map(({ hex, x, y }, i) => {
             const size = NODE_SIZE[hex.status] ?? 42;
             const half = size / 2;
+            // Build accessible label
+            const dayPercent = hex.status === "today" ? todayStats.percent : (hex.percent ?? 0);
+            const ariaLabel =
+              hex.status === "future"
+                ? t("accessibility.dayNodeFuture").replace("{day}", String(hex.day))
+                : hex.status === "today"
+                  ? t("accessibility.dayNodeToday").replace("{day}", String(hex.day)).replace("{percent}", String(dayPercent))
+                  : t("accessibility.dayNode").replace("{day}", String(hex.day)).replace("{percent}", String(dayPercent));
             return (
               <div
                 key={hex.day}
@@ -797,6 +833,7 @@ export function HexGrid({ locale }: HexGridProps) {
                   isSelected={selectedHex?.day === hex.day}
                   onTap={handleTap}
                   todayPercent={hex.status === "today" ? todayStats.percent : 0}
+                  ariaLabel={ariaLabel}
                 />
               </div>
             );
@@ -828,27 +865,32 @@ export function HexGrid({ locale }: HexGridProps) {
       <AnimatePresence>
         {selectedHex && (
           <motion.div
+            ref={dayDetailTrapRef}
             className="fixed inset-0 z-50 flex flex-col"
-            initial={{ opacity: 0 }}
+            initial={prefersReducedMotion ? false : { opacity: 0 }}
             animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            exit={prefersReducedMotion ? undefined : { opacity: 0 }}
             transition={{ duration: 0.2 }}
+            role="dialog"
+            aria-modal="true"
+            aria-label={`${t("common.day")} ${selectedHex.day}`}
+            onKeyDown={(e) => { if (e.key === "Escape") setSelectedHex(null); }}
           >
             {/* Backdrop */}
             <motion.div
               className="absolute inset-0 bg-black/40 backdrop-blur-sm"
               onClick={() => setSelectedHex(null)}
-              initial={{ opacity: 0 }}
+              initial={prefersReducedMotion ? false : { opacity: 0 }}
               animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+              exit={prefersReducedMotion ? undefined : { opacity: 0 }}
             />
             {/* Sheet */}
             <motion.div
               className="relative mt-auto max-h-[92vh] overflow-y-auto rounded-t-3xl bg-white shadow-2xl dark:bg-secondary-900"
-              initial={{ y: "100%" }}
+              initial={prefersReducedMotion ? false : { y: "100%" }}
               animate={{ y: 0 }}
-              exit={{ y: "100%" }}
-              transition={{ type: "spring", damping: 28, stiffness: 300 }}
+              exit={prefersReducedMotion ? undefined : { y: "100%" }}
+              transition={prefersReducedMotion ? { duration: 0 } : { type: "spring", damping: 28, stiffness: 300 }}
             >
               {/* Drag handle */}
               <div className="sticky top-0 z-10 flex justify-center bg-white/80 pb-1 pt-3 backdrop-blur-sm dark:bg-secondary-900/80">
@@ -888,12 +930,16 @@ export function HexGrid({ locale }: HexGridProps) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-50 flex items-center justify-center bg-primary-900/70 backdrop-blur-md"
+            role="dialog"
+            aria-modal="true"
+            aria-label={t("accessibility.closePhase")}
+            onKeyDown={(e) => { if (e.key === "Escape") { setShowPhaseCeremony(null); fireConfetti("big"); } }}
           >
             <motion.div
-              initial={{ scale: 0.7, opacity: 0 }}
+              initial={prefersReducedMotion ? false : { scale: 0.7, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ type: "spring", damping: 20, stiffness: 200 }}
+              exit={prefersReducedMotion ? undefined : { scale: 0.9, opacity: 0 }}
+              transition={prefersReducedMotion ? { duration: 0 } : { type: "spring", damping: 20, stiffness: 200 }}
               className="mx-6 max-w-sm rounded-3xl bg-white p-8 text-center shadow-2xl dark:bg-secondary-800"
             >
               <div className="mb-3 text-4xl">
@@ -943,6 +989,12 @@ export function HexGrid({ locale }: HexGridProps) {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* ── Onboarding Tour ────────────────────────── */}
+      {state.setupComplete && <OnboardingTour locale={locale} />}
+
+      {/* ── Toast Notifications ────────────────────── */}
+      <ToastContainer />
     </div>
   );
 }

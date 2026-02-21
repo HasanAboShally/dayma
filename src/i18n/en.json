@@ -337,7 +337,14 @@
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
     "toggleTheme": "Toggle dark mode",
-    "changeLanguage": "Change language"
+    "changeLanguage": "Change language",
+    "dayNode": "Day {day}, {percent}% complete",
+    "dayNodeFuture": "Day {day}, upcoming",
+    "dayNodeToday": "Day {day}, today, {percent}% complete",
+    "dismissBanner": "Dismiss notification",
+    "journeyGrid": "Ramadan journey progress grid",
+    "closeDayDetail": "Close day detail",
+    "closePhase": "Close phase ceremony"
   },
   "basics": {
     "fajr": "Fajr Prayer",
@@ -606,5 +613,32 @@
     "button": "Install App",
     "dismiss": "Not now",
     "ios": "Tap {shareIcon} then \"Add to Home Screen\""
+  },
+  "toast": {
+    "storageFull": "Storage is full. Consider exporting your data from Settings.",
+    "storageError": "Could not save data. Please try again."
+  },
+  "onboarding": {
+    "welcome": "Welcome to Dayma!",
+    "step1": "This is your Ramadan journey. Each circle is a day — they light up as you progress.",
+    "step2": "Tap today's circle or the button below to log your worship. It only takes 2 minutes!",
+    "step3": "Use the menu in the top corner to access settings, progress stats, and your plan.",
+    "next": "Next",
+    "done": "Let's Begin!",
+    "skip": "Skip Tour"
+  },
+  "audio": {
+    "play": "Play verse recitation",
+    "pause": "Pause recitation",
+    "loading": "Loading audio..."
+  },
+  "cloud": {
+    "title": "Cloud Backup",
+    "desc": "Sync your data across devices with Google sign-in.",
+    "enable": "Enable Cloud Backup",
+    "disable": "Disable Cloud Backup",
+    "syncing": "Syncing...",
+    "lastSync": "Last synced",
+    "notConfigured": "Cloud backup is not available yet."
   }
 }

@@ -26,6 +26,8 @@ import {
 } from "@/lib/store";
 import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { trackEvent, AnalyticsEvents } from "@/lib/analytics";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 // ── Category Icons ───────────────────────────────────────────
 
@@ -62,6 +64,7 @@ export function DayDetail({
 }: DayDetailProps) {
   const t = createTranslator(locale);
   const isAr = locale === "ar";
+  const prefersReducedMotion = useReducedMotion();
   const today = getDateString();
   const isToday = date === today;
   const isFuture = date > today;
@@ -157,6 +160,7 @@ export function DayDetail({
       onStateChange(next);
       haptic("light");
       playSound("check");
+      trackEvent(AnalyticsEvents.BASIC_TOGGLED, { basicId, day: date });
     },
     [stateWithDay, date, onStateChange],
   );
@@ -168,6 +172,7 @@ export function DayDetail({
       onStateChange(next);
       haptic("light");
       playSound("check");
+      trackEvent(AnalyticsEvents.HABIT_COMPLETED, { habitId, day: date });
     },
     [stateWithDay, date, onStateChange],
   );
@@ -186,6 +191,9 @@ export function DayDetail({
       const next = setReflection(stateWithDay, date, text);
       saveState(next);
       onStateChange(next);
+      if (text.trim()) {
+        trackEvent(AnalyticsEvents.REFLECTION_WRITTEN, { day: date });
+      }
     },
     [stateWithDay, date, onStateChange],
   );
@@ -205,10 +213,10 @@ export function DayDetail({
       <AnimatePresence>
         {showBismillah && (
           <motion.div
-            initial={{ opacity: 0, y: -8 }}
+            initial={prefersReducedMotion ? false : { opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: prefersReducedMotion ? 0 : 0.6 }}
             className="mb-4 text-center"
           >
             <p
@@ -225,9 +233,10 @@ export function DayDetail({
       <AnimatePresence>
         {celebrationMsg && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.8, y: -10 }}
+            initial={prefersReducedMotion ? false : { opacity: 0, scale: 0.8, y: -10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: prefersReducedMotion ? 0 : 0.3 }}
             className="mb-4 rounded-2xl bg-gradient-to-r from-primary-500 to-emerald-500 px-5 py-3.5 text-center text-lg font-black text-white shadow-lg"
             style={{
               fontFamily: isAr ? "var(--font-arabic)" : "var(--font-heading)",
@@ -308,8 +317,9 @@ export function DayDetail({
       {/* Warm return for missed past days */}
       {isPastMissed && (
         <motion.div
-          initial={{ opacity: 0, y: 8 }}
+          initial={prefersReducedMotion ? false : { opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: prefersReducedMotion ? 0 : 0.3 }}
           className="mb-6 rounded-2xl border-2 border-primary-200 bg-primary-50/60 p-5 text-center dark:border-primary-800 dark:bg-primary-950/30"
         >
           <p
@@ -557,11 +567,11 @@ export function DayDetail({
                             ? "bg-gradient-to-r from-accent-400 to-amber-400"
                             : "bg-accent-500"
                         }`}
-                        initial={{ width: 0 }}
+                        initial={prefersReducedMotion ? false : { width: 0 }}
                         animate={{
                           width: `${Math.min(progressPercent, 100)}%`,
                         }}
-                        transition={{ duration: 0.5, ease: "easeOut" }}
+                        transition={{ duration: prefersReducedMotion ? 0 : 0.5, ease: "easeOut" }}
                       />
                     </div>
                     {exceeded && (
@@ -627,15 +637,17 @@ export function DayDetail({
       <AnimatePresence>
         {showSaveOverlay && (
           <motion.div
-            initial={{ opacity: 0 }}
+            initial={prefersReducedMotion ? false : { opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            transition={{ duration: prefersReducedMotion ? 0 : 0.3 }}
             className="fixed inset-0 z-50 flex items-center justify-center bg-primary-900/60 backdrop-blur-sm"
           >
             <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
+              initial={prefersReducedMotion ? false : { scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ duration: prefersReducedMotion ? 0 : 0.3 }}
               className="mx-6 max-w-sm rounded-3xl bg-white p-8 text-center shadow-2xl dark:bg-secondary-800"
             >
               <div className="mb-4 text-5xl font-black text-primary-500">
@@ -678,6 +690,7 @@ export function DayDetail({
           setShowSaveOverlay(true);
           haptic("medium");
           playSound("complete");
+          trackEvent(AnalyticsEvents.DAY_SAVED, { day: date, percent: stats.percent });
           // After 2s, actually save and close
           setTimeout(() => {
             if (onSave) onSave();

@@ -5,7 +5,9 @@
 
 import { createTranslator } from "@/i18n/client";
 import type { AppLocale } from "@/lib/app-types";
+import { trackEvent, AnalyticsEvents } from "@/lib/analytics";
 import { Icon, type IconName } from "@/lib/icons";
+import { useFocusTrap } from "@/hooks/useFocusTrap";
 import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useEffect, useState } from "react";
 
@@ -24,6 +26,7 @@ export function SideDrawer({ locale, currentPath }: SideDrawerProps) {
   const t = createTranslator(locale);
   const isRTL = locale === "ar";
   const [open, setOpen] = useState(false);
+  const drawerTrapRef = useFocusTrap<HTMLElement>(open);
 
   const items: NavItem[] = [
     { href: `/${locale}/app/today`, icon: "nav-today", labelKey: "nav.today" },
@@ -65,7 +68,12 @@ export function SideDrawer({ locale, currentPath }: SideDrawerProps) {
     };
   }, [open]);
 
-  const toggle = useCallback(() => setOpen((p) => !p), []);
+  const toggle = useCallback(() => {
+    setOpen((p) => {
+      if (!p) trackEvent(AnalyticsEvents.MENU_OPENED);
+      return !p;
+    });
+  }, []);
 
   // Slide direction depends on RTL
   const slideFrom = isRTL ? { x: "100%" } : { x: "-100%" };
@@ -104,11 +112,15 @@ export function SideDrawer({ locale, currentPath }: SideDrawerProps) {
 
             {/* Drawer panel */}
             <motion.nav
+              ref={drawerTrapRef}
               initial={slideFrom}
               animate={slideTo}
               exit={slideFrom}
               transition={{ type: "spring", damping: 26, stiffness: 300 }}
               dir={isRTL ? "rtl" : "ltr"}
+              role="dialog"
+              aria-modal="true"
+              aria-label={t("accessibility.openMenu")}
               className="fixed inset-y-0 start-0 z-[70] flex w-80 flex-col bg-gradient-to-b from-primary-50 via-white to-accent-50/30 shadow-2xl dark:from-secondary-900 dark:via-secondary-900 dark:to-secondary-950"
             >
               {/* Header */}
