@@ -111,17 +111,17 @@ export function InstallPrompt({ locale }: InstallPromptProps) {
 
           <div className="min-w-0 flex-1">
             <p className="text-sm font-semibold text-secondary-900 dark:text-white">
-              {t("install_title")}
+              {t("install.title")}
             </p>
             <p className="mt-0.5 text-xs text-secondary-500 dark:text-secondary-400">
-              {t("install_ios").replace("{shareIcon}", "⎋")}
+              {t("install.ios").replace("{shareIcon}", "⎋")}
             </p>
           </div>
 
           <button
             onClick={handleDismiss}
             className="shrink-0 rounded-full p-1.5 text-secondary-400 transition-colors hover:bg-secondary-100 hover:text-secondary-600 dark:hover:bg-secondary-800"
-            aria-label={t("install_dismiss")}
+            aria-label={t("install.dismiss")}
           >
             <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M18 6L6 18M6 6l12 12" />
@@ -147,10 +147,10 @@ export function InstallPrompt({ locale }: InstallPromptProps) {
 
         <div className="min-w-0 flex-1">
           <p className="text-sm font-semibold text-secondary-900 dark:text-white">
-            {t("install_title")}
+            {t("install.title")}
           </p>
           <p className="mt-0.5 text-xs text-secondary-500 dark:text-secondary-400">
-            {t("install_desc")}
+            {t("install.desc")}
           </p>
         </div>
 
@@ -159,14 +159,14 @@ export function InstallPrompt({ locale }: InstallPromptProps) {
             onClick={handleDismiss}
             className="rounded-lg px-3 py-1.5 text-xs font-medium text-secondary-500 transition-colors hover:bg-secondary-100 dark:text-secondary-400 dark:hover:bg-secondary-800"
           >
-            {t("install_dismiss")}
+            {t("install.dismiss")}
           </button>
           <button
             onClick={handleInstall}
             disabled={installing}
             className="rounded-lg bg-primary-600 px-4 py-1.5 text-xs font-semibold text-white shadow-sm transition-all hover:bg-primary-700 active:scale-95 disabled:opacity-60"
           >
-            {installing ? "..." : t("install_button")}
+            {installing ? "..." : t("install.button")}
           </button>
         </div>
       </div>
