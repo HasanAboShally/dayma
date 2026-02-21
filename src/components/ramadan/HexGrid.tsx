@@ -46,22 +46,22 @@ const EidCelebration = lazy(() =>
 
 // ── Layout Constants ─────────────────────────────────────────
 
-const CONTAINER_W = 300;
+const CONTAINER_W = 320;
 const CENTER_X = CONTAINER_W / 2;
-const NODE_GAP = 68;
-const WAVE_AMP = 48;
+const NODE_GAP = 76;
+const WAVE_AMP = 52;
 const WAVE_FREQ = 0.85;
-const PHASE_SPACE = 48;
-const TOP_OFFSET = 56;
-const BOTTOM_PAD = 80;
+const PHASE_SPACE = 52;
+const TOP_OFFSET = 60;
+const BOTTOM_PAD = 90;
 
 const NODE_SIZE: Record<HexDayStatus, number> = {
-  future: 38,
-  today: 56,
-  "past-empty": 42,
-  "past-partial": 44,
-  "past-good": 44,
-  "past-perfect": 48,
+  future: 44,
+  today: 64,
+  "past-empty": 48,
+  "past-partial": 50,
+  "past-good": 50,
+  "past-perfect": 54,
 };
 
 // ── Position Model ───────────────────────────────────────────
@@ -206,8 +206,8 @@ function DayNode({
         <span
           className={`relative z-10 leading-none ${
             hex.status === "today"
-              ? "text-base font-bold"
-              : "text-sm font-semibold"
+              ? "text-lg font-black"
+              : "text-base font-bold"
           }`}
         >
           {hex.day}
@@ -550,98 +550,106 @@ export function HexGrid({ locale }: HexGridProps) {
       className={`flex min-h-screen flex-col ${
         isLaylatalQadr
           ? "bg-gradient-to-b from-indigo-950/30 via-purple-50/40 to-indigo-50/30 dark:from-indigo-950 dark:via-purple-950 dark:to-indigo-950"
-          : "bg-gradient-to-b from-primary-50/40 via-secondary-50 to-accent-50/30 dark:from-secondary-950 dark:via-secondary-950 dark:to-secondary-950"
+          : "bg-gradient-to-b from-primary-50/50 via-primary-50/20 to-accent-50/40 dark:from-secondary-950 dark:via-secondary-950 dark:to-secondary-950"
       }`}
     >
       {/* ── Header ─────────────────────────────────── */}
-      <header className="z-10 border-b border-primary-100/50 bg-white/60 px-5 pt-14 pb-3 backdrop-blur-md dark:border-secondary-800 dark:bg-secondary-950/80">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1
-              className="text-xl font-bold tracking-tight text-secondary-900 dark:text-white"
-              style={{
-                fontFamily: isRTL
-                  ? "var(--font-arabic)"
-                  : "var(--font-heading)",
-              }}
-            >
-              {t("site.name")}
-            </h1>
-            <p className="text-xs text-secondary-500">
-              {t("today.day_label")} {currentDay} {t("today.of_ramadan")}
-            </p>
+      <header className="relative z-10 overflow-hidden px-5 pt-16 pb-5">
+        {/* Subtle radial glow behind the header */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-primary-100/60 via-transparent to-transparent dark:from-primary-950/40" />
+
+        {/* Main hero row: Big day badge + streak fire */}
+        <div className="relative flex items-center justify-between">
+          {/* Day counter — big, bold, game-like */}
+          <div className="flex items-center gap-3">
+            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-primary-500 to-primary-700 shadow-lg shadow-primary-500/30">
+              <span className="text-2xl font-black text-white leading-none">{currentDay}</span>
+            </div>
+            <div>
+              <h1
+                className="text-2xl font-black tracking-tight text-secondary-900 dark:text-white"
+                style={{
+                  fontFamily: isRTL
+                    ? "var(--font-arabic)"
+                    : "var(--font-heading)",
+                }}
+              >
+                {t("site.name")}
+              </h1>
+              <p className="text-sm font-semibold text-primary-600 dark:text-primary-400">
+                {t("today.day_label")} {currentDay} {t("today.of_ramadan")}
+              </p>
+            </div>
           </div>
+
+          {/* Streak badge — fiery, prominent */}
           {streak > 0 && (
-            <div className="flex items-center gap-1 rounded-full bg-accent-100 px-2.5 py-1 dark:bg-accent-900/30 animate-[nodeEntry_0.3s_ease-out_both]">
-              <Icon name="flame" className="h-3.5 w-3.5 text-accent-600" />
-              <span className="text-xs font-bold text-accent-700 dark:text-accent-400">
+            <div className="flex flex-col items-center gap-0.5 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 px-4 py-2.5 shadow-lg shadow-orange-400/30 animate-[nodeEntry_0.3s_ease-out_both]">
+              <Icon name="flame" className="h-5 w-5 text-white drop-shadow" />
+              <span className="text-lg font-black text-white leading-none">
                 {streak}
               </span>
             </div>
           )}
         </div>
 
-        {/* Quick stats row */}
-        <div className="mt-3 flex gap-2">
-          {[
-            {
-              label: t("hex.basics_done"),
-              value: `${todayStats.basicsDone}/${todayStats.basicsTotal}`,
-              accent: false,
-            },
-            {
-              label: t("hex.daily_done"),
-              value: `${todayStats.dailyDone}/${todayStats.dailyTotal}`,
-              accent: false,
-            },
-            {
-              label: t("hex.completion"),
-              value: `${todayStats.percent}%`,
-              accent: true,
-            },
-          ].map((s) => (
+        {/* XP-style progress bar — replaces boring stat boxes */}
+        <div className="relative mt-5">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm font-bold text-secondary-700 dark:text-secondary-300">
+              {t("hex.completion")}
+            </span>
+            <span className="text-lg font-black text-primary-600 dark:text-primary-400">
+              {todayStats.percent}%
+            </span>
+          </div>
+          <div className="h-4 overflow-hidden rounded-full bg-secondary-200/60 dark:bg-secondary-700/60 shadow-inner">
             <div
-              key={s.label}
-              className="flex-1 rounded-xl bg-white/70 p-2.5 dark:bg-secondary-900/60"
-            >
-              <p className="text-[10px] text-secondary-500">{s.label}</p>
-              <p
-                className={`font-heading text-lg font-bold leading-tight ${
-                  s.accent
-                    ? "text-accent-600 dark:text-accent-400"
-                    : "text-primary-600 dark:text-primary-400"
-                }`}
-              >
-                {s.value}
-              </p>
+              className="h-full rounded-full bg-gradient-to-r from-primary-400 via-primary-500 to-emerald-400 shadow-md transition-all duration-700 ease-out"
+              style={{ width: `${todayStats.percent}%` }}
+            />
+          </div>
+          {/* Stats pills below the bar */}
+          <div className="mt-3 flex gap-2">
+            <div className="flex-1 flex items-center justify-center gap-2 rounded-2xl bg-white/80 py-2.5 shadow-sm dark:bg-secondary-800/60">
+              <Icon name="shield-check" className="h-4 w-4 text-primary-500" />
+              <span className="text-base font-bold text-secondary-800 dark:text-secondary-200">
+                {todayStats.basicsDone}/{todayStats.basicsTotal}
+              </span>
             </div>
-          ))}
+            <div className="flex-1 flex items-center justify-center gap-2 rounded-2xl bg-white/80 py-2.5 shadow-sm dark:bg-secondary-800/60">
+              <Icon name="check-circle" className="h-4 w-4 text-emerald-500" />
+              <span className="text-base font-bold text-secondary-800 dark:text-secondary-200">
+                {todayStats.dailyDone}/{todayStats.dailyTotal}
+              </span>
+            </div>
+          </div>
         </div>
 
-        {/* Daily Verse Card */}
-        <div className="mt-3 rounded-2xl bg-gradient-to-r from-primary-50 to-accent-50/60 p-3 dark:from-primary-950/40 dark:to-accent-950/30 animate-[fadeSlideUp_0.4s_ease-out_0.3s_both]">
+        {/* Daily Verse Card — bigger, more readable */}
+        <div className="mt-4 rounded-2xl bg-white/70 p-4 shadow-sm dark:bg-secondary-800/50 animate-[fadeSlideUp_0.4s_ease-out_0.3s_both]">
           <p
-            className="text-center text-xs leading-relaxed text-secondary-700 dark:text-secondary-300"
+            className="text-center text-sm leading-relaxed font-medium text-secondary-700 dark:text-secondary-300"
             style={{
               fontFamily: isRTL ? "var(--font-arabic)" : "var(--font-sans)",
             }}
           >
-            "{isRTL ? dailyContent.verse.ar : dailyContent.verse.en}"
+            &ldquo;{isRTL ? dailyContent.verse.ar : dailyContent.verse.en}&rdquo;
           </p>
-          <p className="mt-1 text-center text-[10px] text-secondary-400">
+          <p className="mt-1.5 text-center text-xs font-semibold text-secondary-400">
             — {dailyContent.verse.ref}
           </p>
         </div>
 
         {/* Laylatul Qadr Banner */}
         {isLaylatalQadr && (
-          <div className="mt-2 flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 px-3 py-2 shadow-lg shadow-purple-600/20 animate-[nodeEntry_0.4s_ease-out_both]">
-            <span className="text-sm">✦</span>
-            <span className="text-xs font-bold text-white">
+          <div className="mt-3 flex items-center justify-center gap-2.5 rounded-2xl bg-gradient-to-r from-indigo-600 to-purple-600 px-4 py-3 shadow-lg shadow-purple-600/25 animate-[nodeEntry_0.4s_ease-out_both]">
+            <span className="text-lg">✦</span>
+            <span className="text-sm font-bold text-white">
               {t("laylatul_qadr.banner")}
             </span>
             {isTonightOdd && (
-              <span className="rounded-full bg-white/20 px-2 py-0.5 text-[10px] font-semibold text-white">
+              <span className="rounded-full bg-white/20 px-3 py-1 text-xs font-bold text-white">
                 {t("laylatul_qadr.odd_night")}
               </span>
             )}
@@ -753,12 +761,13 @@ export function HexGrid({ locale }: HexGridProps) {
             const h = hexData.find((d) => d.status === "today");
             if (h) handleTap(h);
           }}
-          className="pointer-events-auto flex items-center gap-2 rounded-full bg-primary-600 px-6 py-3 text-sm font-semibold text-white shadow-xl shadow-primary-600/30 transition-colors hover:bg-primary-700 active:scale-95"
+          className="pointer-events-auto flex items-center gap-3 rounded-2xl bg-gradient-to-r from-primary-500 to-emerald-500 px-8 py-4 text-base font-black text-white shadow-xl shadow-primary-600/40 transition-all hover:shadow-2xl hover:shadow-primary-500/50 active:scale-95 active:shadow-md"
           style={{
             fontFamily: isRTL ? "var(--font-arabic)" : "var(--font-heading)",
+            boxShadow: "0 6px 0 rgba(4,120,87,0.6), 0 10px 30px rgba(16,185,129,0.3)",
           }}
         >
-          <Icon name="sparkles" className="h-4 w-4" />
+          <Icon name="sparkles" className="h-5 w-5" />
           {t("hex.open_today")}
         </button>
       </div>

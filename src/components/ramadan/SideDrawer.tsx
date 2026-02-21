@@ -73,27 +73,19 @@ export function SideDrawer({ locale, currentPath }: SideDrawerProps) {
 
   return (
     <>
-      {/* ── Top Bar: Hamburger + Centered App Name ── */}
-      <div className="fixed inset-x-0 top-0 z-[60] flex h-14 items-center border-b border-primary-100/40 bg-white/80 px-4 backdrop-blur-md dark:border-secondary-800 dark:bg-secondary-950/80">
+      {/* ── Top Bar: Big hamburger, no centered title (header has its own) ── */}
+      <div className="fixed inset-x-0 top-0 z-[60] flex h-14 items-center px-4">
         <button
           type="button"
           onClick={toggle}
           aria-label={t("accessibility.openMenu")}
-          className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/90 shadow-lg shadow-primary-900/10 backdrop-blur-lg transition-transform hover:scale-105 active:scale-95 dark:bg-secondary-800/90"
+          className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/90 shadow-lg shadow-primary-900/10 backdrop-blur-lg transition-transform hover:scale-105 active:scale-90 dark:bg-secondary-800/90"
         >
           <Icon
             name={open ? "close" : "menu"}
-            className="h-5 w-5 text-secondary-700 dark:text-secondary-200"
+            className="h-6 w-6 text-secondary-700 dark:text-secondary-200"
           />
         </button>
-        <span
-          className="pointer-events-none absolute inset-x-0 text-center text-lg font-bold tracking-tight text-secondary-800 dark:text-white"
-          style={{
-            fontFamily: isRTL ? "var(--font-arabic)" : "var(--font-heading)",
-          }}
-        >
-          {t("site.name")}
-        </span>
       </div>
 
       {/* ── Drawer Overlay + Panel ── */}
@@ -117,25 +109,25 @@ export function SideDrawer({ locale, currentPath }: SideDrawerProps) {
               exit={slideFrom}
               transition={{ type: "spring", damping: 26, stiffness: 300 }}
               dir={isRTL ? "rtl" : "ltr"}
-              className="fixed inset-y-0 start-0 z-[70] flex w-72 flex-col bg-gradient-to-b from-primary-50 via-white to-accent-50/30 shadow-2xl dark:from-secondary-900 dark:via-secondary-900 dark:to-secondary-950"
+              className="fixed inset-y-0 start-0 z-[70] flex w-80 flex-col bg-gradient-to-b from-primary-50 via-white to-accent-50/30 shadow-2xl dark:from-secondary-900 dark:via-secondary-900 dark:to-secondary-950"
             >
               {/* Header */}
-              <div className="flex items-center gap-3 border-b border-secondary-100 px-5 pb-4 pt-6 dark:border-secondary-800">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-500 text-white shadow-md shadow-primary-500/30">
-                  <Icon name="moon-star" className="h-5 w-5" />
+              <div className="flex items-center gap-3.5 border-b border-secondary-100 px-5 pb-5 pt-7 dark:border-secondary-800">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-primary-500 to-primary-700 text-white shadow-lg shadow-primary-500/30">
+                  <Icon name="moon-star" className="h-6 w-6" />
                 </div>
                 <div>
-                  <p className="font-heading text-base font-bold text-secondary-900 dark:text-white">
+                  <p className="font-heading text-lg font-black text-secondary-900 dark:text-white">
                     {t("site.name")}
                   </p>
-                  <p className="text-[10px] text-secondary-400">
+                  <p className="text-xs font-medium text-secondary-500">
                     {t("site.tagline")}
                   </p>
                 </div>
               </div>
 
-              {/* Nav Items */}
-              <div className="flex-1 space-y-1 px-3 pt-4">
+              {/* Nav Items — bigger touch targets */}
+              <div className="flex-1 space-y-1.5 px-3 pt-5">
                 {items.map((item) => {
                   const active = isActive(item.href);
                   return (
@@ -143,7 +135,7 @@ export function SideDrawer({ locale, currentPath }: SideDrawerProps) {
                       key={item.href}
                       href={item.href}
                       onClick={() => setOpen(false)}
-                      className={`relative flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all ${
+                      className={`relative flex items-center gap-3.5 rounded-2xl px-4 py-4 text-base font-semibold transition-all ${
                         active
                           ? "bg-primary-500/10 text-primary-700 dark:bg-primary-500/20 dark:text-primary-300"
                           : "text-secondary-600 hover:bg-secondary-100 hover:text-secondary-900 dark:text-secondary-400 dark:hover:bg-secondary-800 dark:hover:text-white"
@@ -152,13 +144,13 @@ export function SideDrawer({ locale, currentPath }: SideDrawerProps) {
                       {active && (
                         <motion.div
                           layoutId="drawer-active"
-                          className="absolute inset-y-1 start-0 w-1 rounded-full bg-primary-500"
+                          className="absolute inset-y-1 start-0 w-1.5 rounded-full bg-primary-500"
                           transition={{ type: "spring", duration: 0.4 }}
                         />
                       )}
                       <Icon
                         name={item.icon}
-                        className={`h-5 w-5 ${active ? "text-primary-500" : ""}`}
+                        className={`h-6 w-6 ${active ? "text-primary-500" : ""}`}
                       />
                       <span>{t(item.labelKey)}</span>
                     </a>
@@ -167,8 +159,8 @@ export function SideDrawer({ locale, currentPath }: SideDrawerProps) {
               </div>
 
               {/* Footer */}
-              <div className="border-t border-secondary-100 px-5 py-4 dark:border-secondary-800">
-                <div className="flex flex-wrap gap-3 text-[10px] text-secondary-400 dark:text-secondary-500">
+              <div className="border-t border-secondary-100 px-5 py-5 dark:border-secondary-800">
+                <div className="flex flex-wrap gap-4 text-xs font-medium text-secondary-500 dark:text-secondary-400">
                   <a
                     href={`/${locale}/privacy`}
                     className="hover:text-primary-600 transition-colors"
@@ -188,7 +180,7 @@ export function SideDrawer({ locale, currentPath }: SideDrawerProps) {
                     {t("footer.about_link")}
                   </a>
                 </div>
-                <p className="mt-1 text-[10px] text-secondary-400 dark:text-secondary-500">
+                <p className="mt-2 text-xs text-secondary-400 dark:text-secondary-500">
                   {t("footer.privacy")}
                 </p>
               </div>

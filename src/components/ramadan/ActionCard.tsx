@@ -54,43 +54,43 @@ export function ActionCard({
       type="button"
       onClick={() => onToggle(action.id)}
       className={`
-        group flex w-full items-center gap-3 rounded-xl p-3
+        group flex w-full items-center gap-3.5 rounded-2xl p-4
         text-start transition-colors
         ${
           completed
             ? "bg-primary-50 dark:bg-primary-950/30"
             : "bg-white dark:bg-neutral-800/60"
         }
-        border
+        border-2
         ${
           completed
             ? "border-primary-200 dark:border-primary-800"
             : "border-neutral-200 dark:border-neutral-700"
         }
       `}
-      whileTap={{ scale: 0.98 }}
+      whileTap={{ scale: 0.97 }}
       layout
     >
-      {/* Checkbox circle */}
+      {/* Checkbox circle — bigger */}
       <div
         className={`
-          flex h-8 w-8 shrink-0 items-center justify-center rounded-full
+          flex h-10 w-10 shrink-0 items-center justify-center rounded-full
           transition-all duration-200
           ${
             completed
-              ? "bg-primary-500 text-white shadow-sm"
+              ? "bg-primary-500 text-white shadow-sm shadow-primary-500/30"
               : "border-2 border-neutral-300 dark:border-neutral-600"
           }
         `}
       >
-        {completed && <Icon name="check" className="h-4 w-4" />}
+        {completed && <Icon name="check" className="h-5 w-5" />}
       </div>
 
-      {/* Icon + text */}
-      <div className="flex min-w-0 flex-1 items-center gap-2.5">
+      {/* Icon + text — bigger */}
+      <div className="flex min-w-0 flex-1 items-center gap-3">
         <Icon
           name={iconName}
-          className={`h-5 w-5 shrink-0 ${
+          className={`h-6 w-6 shrink-0 ${
             completed
               ? "text-primary-500"
               : "text-neutral-400 dark:text-neutral-500"
@@ -99,7 +99,7 @@ export function ActionCard({
 
         <div className="min-w-0 flex-1">
           <p
-            className={`text-sm font-medium leading-tight ${
+            className={`text-base font-semibold leading-tight ${
               completed
                 ? "text-primary-700 line-through decoration-primary-300 dark:text-primary-300"
                 : "text-neutral-900 dark:text-neutral-100"
@@ -108,16 +108,16 @@ export function ActionCard({
             {title}
           </p>
           {description && (
-            <p className="mt-0.5 truncate text-xs text-neutral-500 dark:text-neutral-400">
+            <p className="mt-1 truncate text-sm text-neutral-500 dark:text-neutral-400">
               {description}
             </p>
           )}
         </div>
       </div>
 
-      {/* Target badge */}
+      {/* Target badge — bigger */}
       {targetLabel && (
-        <span className="shrink-0 rounded-full bg-neutral-100 px-2 py-0.5 text-xs font-medium text-neutral-600 dark:bg-neutral-700 dark:text-neutral-300">
+        <span className="shrink-0 rounded-full bg-neutral-100 px-3 py-1 text-sm font-bold text-neutral-600 dark:bg-neutral-700 dark:text-neutral-300">
           {targetLabel}
         </span>
       )}

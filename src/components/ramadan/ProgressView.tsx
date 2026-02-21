@@ -154,82 +154,86 @@ export function ProgressView({ locale }: ProgressViewProps) {
   // ── Render ─────────────────────────────────────────────
 
   return (
-    <div data-hydrated="true" className="mx-auto max-w-lg px-4 pb-8 pt-4">
+    <div data-hydrated="true" className="mx-auto max-w-lg px-5 pb-10 pt-5">
       {/* Header */}
-      <div className="mb-6 text-center">
-        <h2 className="font-heading text-xl font-bold text-secondary-900 dark:text-white">
+      <div className="mb-7 text-center">
+        <h2 className="font-heading text-2xl font-black text-secondary-900 dark:text-white">
           {t("progress.title")}
         </h2>
-        <p className="mt-1 text-sm text-secondary-500 dark:text-secondary-400">
+        <p className="mt-1.5 text-sm font-medium text-secondary-500 dark:text-secondary-400">
           {currentDay > 0 && currentDay <= 30
             ? `${t("common.day")} ${currentDay} ${t("progress.of_ramadan")}`
             : t("progress.subtitle")}
         </p>
       </div>
 
-      {/* Stats cards */}
-      <div className="mb-6 grid grid-cols-2 gap-3">
+      {/* Stats cards — bigger, bolder */}
+      <div className="mb-7 grid grid-cols-2 gap-3.5">
         {[
           {
             icon: "flame" as IconName,
             value: currentStreak,
             label: t("progress.current_streak"),
             colorClass: "text-accent-500",
+            bgClass: "bg-accent-50 dark:bg-accent-950/20",
           },
           {
             icon: "trophy" as IconName,
             value: longestStreak,
             label: t("progress.longest_streak"),
             colorClass: "text-primary-500",
+            bgClass: "bg-primary-50 dark:bg-primary-950/20",
           },
           {
             icon: "check-circle" as IconName,
             value: totalCompleted,
             label: t("progress.total_completed"),
             colorClass: "text-primary-500",
+            bgClass: "bg-primary-50 dark:bg-primary-950/20",
           },
           {
             icon: "calendar" as IconName,
             value: daysActive,
             label: t("progress.days_active"),
             colorClass: "text-accent-500",
+            bgClass: "bg-accent-50 dark:bg-accent-950/20",
           },
         ].map((stat) => (
           <motion.div
             key={stat.label}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="rounded-2xl border border-secondary-200 bg-white p-4 dark:border-secondary-700 dark:bg-secondary-800/60"
+            className={`rounded-2xl border-2 border-secondary-200 p-5 dark:border-secondary-700 ${stat.bgClass}`}
           >
             <Icon
               name={stat.icon}
-              className={`mb-2 h-5 w-5 ${stat.colorClass}`}
+              className={`mb-2.5 h-6 w-6 ${stat.colorClass}`}
             />
-            <p className="text-2xl font-bold text-secondary-900 dark:text-white">
+            <p className="text-3xl font-black text-secondary-900 dark:text-white">
               {stat.value}
             </p>
-            <p className="text-xs text-secondary-500 dark:text-secondary-400">
+            <p className="text-sm font-medium text-secondary-500 dark:text-secondary-400">
               {stat.label}
             </p>
           </motion.div>
         ))}
       </div>
 
-      {/* Category breakdown — 2 rings (basics + daily) */}
-      <section className="mb-6">
-        <h3 className="mb-4 text-sm font-semibold uppercase tracking-wide text-secondary-500 dark:text-secondary-400">
+      {/* Category breakdown — 2 rings (basics + daily) — bigger */}
+      <section className="mb-7">
+        <h3 className="mb-4 text-sm font-bold uppercase tracking-wide text-secondary-600 dark:text-secondary-400">
           {t("progress.category_title")}
         </h3>
-        <div className="flex items-center justify-center gap-8">
+        <div className="flex items-center justify-center gap-10">
           {/* Basics ring */}
           <div className="flex flex-col items-center">
             <div className="relative">
-              {renderRing(categoryBreakdown.basicsPercent, "text-primary-500")}
-              <span className="absolute inset-0 flex items-center justify-center text-sm font-bold text-secondary-700 dark:text-secondary-300">
+              {renderRing(categoryBreakdown.basicsPercent, "text-primary-500", 96, 8)}
+              <span className="absolute inset-0 flex items-center justify-center text-base font-black text-secondary-700 dark:text-secondary-300">
                 {categoryBreakdown.basicsPercent}%
               </span>
             </div>
-            <p className="mt-2 text-xs font-medium text-secondary-600 dark:text-secondary-400">
+            <p className="mt-2.5 text-sm font-semibold text-secondary-600 dark:text-secondary-400">
               {t("progress.basics_label")}
             </p>
           </div>
@@ -237,23 +241,23 @@ export function ProgressView({ locale }: ProgressViewProps) {
           {/* Daily habits ring */}
           <div className="flex flex-col items-center">
             <div className="relative">
-              {renderRing(categoryBreakdown.dailyPercent, "text-emerald-500")}
-              <span className="absolute inset-0 flex items-center justify-center text-sm font-bold text-secondary-700 dark:text-secondary-300">
+              {renderRing(categoryBreakdown.dailyPercent, "text-emerald-500", 96, 8)}
+              <span className="absolute inset-0 flex items-center justify-center text-base font-black text-secondary-700 dark:text-secondary-300">
                 {categoryBreakdown.dailyPercent}%
               </span>
             </div>
-            <p className="mt-2 text-xs font-medium text-secondary-600 dark:text-secondary-400">
+            <p className="mt-2.5 text-sm font-semibold text-secondary-600 dark:text-secondary-400">
               {t("progress.daily_label")}
             </p>
           </div>
         </div>
       </section>
 
-      {/* Monthly Goals Progress */}
+      {/* Monthly Goals Progress — bigger */}
       {goalProgress.length > 0 && (
-        <section className="mb-6">
-          <h3 className="mb-4 flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-secondary-500 dark:text-secondary-400">
-            <Icon name="target" className="h-4 w-4 text-accent-500" />
+        <section className="mb-7">
+          <h3 className="mb-4 flex items-center gap-2.5 text-sm font-bold uppercase tracking-wide text-secondary-600 dark:text-secondary-400">
+            <Icon name="target" className="h-5 w-5 text-accent-500" />
             {t("progress.monthly_label")}
           </h3>
           <div className="space-y-3">
@@ -267,19 +271,19 @@ export function ProgressView({ locale }: ProgressViewProps) {
                   key={goal.id}
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="rounded-2xl border border-secondary-200 bg-white p-4 dark:border-secondary-700 dark:bg-secondary-800/60"
+                  className="rounded-2xl border-2 border-secondary-200 bg-white p-5 dark:border-secondary-700 dark:bg-secondary-800/60"
                 >
-                  <div className="mb-2 flex items-center gap-3">
-                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-accent-100 text-accent-600 dark:bg-accent-900/30 dark:text-accent-400">
-                      <Icon name={goal.iconName} className="h-4 w-4" />
+                  <div className="mb-3 flex items-center gap-3.5">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-accent-100 text-accent-600 dark:bg-accent-900/30 dark:text-accent-400">
+                      <Icon name={goal.iconName} className="h-5 w-5" />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="text-sm font-medium text-secondary-900 dark:text-white">
+                      <p className="text-base font-semibold text-secondary-900 dark:text-white">
                         {title}
                       </p>
                     </div>
                     <span
-                      className={`text-sm font-bold ${
+                      className={`text-base font-black ${
                         exceeded
                           ? "text-accent-600 dark:text-accent-400"
                           : "text-secondary-600 dark:text-secondary-300"
@@ -288,7 +292,7 @@ export function ProgressView({ locale }: ProgressViewProps) {
                       {progress}/{goal.target}
                     </span>
                   </div>
-                  <div className="h-2.5 overflow-hidden rounded-full bg-secondary-200 dark:bg-secondary-700">
+                  <div className="h-3.5 overflow-hidden rounded-full bg-secondary-200 dark:bg-secondary-700">
                     <motion.div
                       className={`h-full rounded-full ${
                         exceeded
@@ -301,7 +305,7 @@ export function ProgressView({ locale }: ProgressViewProps) {
                     />
                   </div>
                   {exceeded && (
-                    <p className="mt-1.5 text-xs font-medium text-accent-600 dark:text-accent-400">
+                    <p className="mt-2 text-sm font-bold text-accent-600 dark:text-accent-400">
                       {t("monthly.exceeded")} ما شاء الله! 🎉
                     </p>
                   )}
@@ -314,24 +318,24 @@ export function ProgressView({ locale }: ProgressViewProps) {
 
       {/* Empty state if no goals */}
       {goalProgress.length === 0 && (
-        <div className="rounded-2xl border border-dashed border-secondary-300 p-6 text-center dark:border-secondary-600">
+        <div className="rounded-2xl border-2 border-dashed border-secondary-300 p-7 text-center dark:border-secondary-600">
           <Icon
             name="target"
-            className="mx-auto mb-2 h-8 w-8 text-secondary-300 dark:text-secondary-600"
+            className="mx-auto mb-3 h-10 w-10 text-secondary-300 dark:text-secondary-600"
           />
-          <p className="text-sm text-secondary-500 dark:text-secondary-400">
+          <p className="text-base font-medium text-secondary-500 dark:text-secondary-400">
             {t("progress.no_goals")}
           </p>
         </div>
       )}
 
-      {/* Consistency summary */}
+      {/* Consistency summary — bigger */}
       {daysActive > 0 && (
-        <section className="mt-6 rounded-2xl bg-gradient-to-r from-primary-50 to-accent-50 p-5 dark:from-primary-950/30 dark:to-accent-950/30">
-          <h3 className="mb-2 text-sm font-semibold text-secondary-700 dark:text-secondary-300">
+        <section className="mt-7 rounded-2xl bg-gradient-to-r from-primary-50 to-accent-50 p-6 dark:from-primary-950/30 dark:to-accent-950/30">
+          <h3 className="mb-2 text-base font-bold text-secondary-700 dark:text-secondary-300">
             {t("progress.consistency_title")}
           </h3>
-          <p className="text-sm text-secondary-600 dark:text-secondary-400">
+          <p className="text-base text-secondary-600 dark:text-secondary-400">
             {t("progress.consistency_message")
               .replace("{days}", String(daysActive))
               .replace("{total}", String(totalCompleted))

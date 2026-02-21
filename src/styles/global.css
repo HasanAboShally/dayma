@@ -222,6 +222,8 @@
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* Larger base font for accessibility — respects user's system font size */
+    font-size: clamp(100%, 1vw + 0.85rem, 125%);
   }
 
   /* RTL Support */
@@ -239,7 +241,7 @@
   }
 
   body {
-    line-height: 1.6;
+    line-height: 1.7;
     min-height: 100vh;
   }
 
@@ -314,27 +316,42 @@
 }
 
 @layer components {
-  /* Button base - inline the styles for Tailwind v4 compatibility */
+  /* Button base — chunky, game-like, large touch targets (min 48px) */
   .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
-    border-radius: 0.5rem;
-    padding: 0.75rem 1.5rem;
-    font-weight: 500;
-    transition: all 0.2s;
+    gap: 0.625rem;
+    border-radius: 1rem;
+    padding: 0.875rem 1.75rem;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: -0.01em;
+    min-height: 3rem;
+    transition: all 0.15s;
+    transform: translateY(0);
+    box-shadow: 0 4px 0 rgba(0,0,0,0.15);
+  }
+  .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 0 rgba(0,0,0,0.15);
+  }
+  .btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 rgba(0,0,0,0.15);
   }
   .btn:focus {
     outline: none;
   }
   .btn:focus-visible {
-    ring-width: 2px;
-    ring-offset-width: 2px;
+    ring-width: 3px;
+    ring-offset-width: 3px;
   }
   .btn:disabled {
     cursor: not-allowed;
     opacity: 0.5;
+    transform: none;
+    box-shadow: none;
   }
 
   .btn-primary {
@@ -395,12 +412,14 @@
   }
 
   .btn-sm {
-    padding: 0.5rem 1rem;
-    font-size: 0.875rem;
+    padding: 0.625rem 1.25rem;
+    font-size: 0.9375rem;
+    min-height: 2.75rem;
   }
   .btn-lg {
-    padding: 1rem 2rem;
-    font-size: 1.125rem;
+    padding: 1.125rem 2.25rem;
+    font-size: 1.25rem;
+    min-height: 3.5rem;
   }
 
   /* Input fields */
@@ -561,8 +580,8 @@
   }
 
   .body-small {
-    font-size: 0.875rem;
-    color: var(--color-secondary-500);
+    font-size: 0.9375rem;
+    color: var(--color-secondary-600);
   }
 
   /* Link styles */
