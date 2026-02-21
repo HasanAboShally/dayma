@@ -1,15 +1,18 @@
 // ============================================================
 // Ramadan Companion — Day Detail View (Two-Layer)
 // Shows basics, daily habits, monthly goals, and reflection
-// for a specific day. Basics are auto-checked (uncheck if
-// missed). Monthly goals show per-goal progress bars.
+// for a specific day. Basics start unchecked — users confirm
+// each one for full satisfaction. Progressive celebrations
+// at 25/50/75/100%. Warm save moment with affirming message.
 // ============================================================
 
 import { createTranslator } from "@/i18n/client";
 import type { AppLocale, AppState, DayEntry } from "@/lib/app-types";
+import { fireConfetti, haptic, playSound } from "@/lib/feedback";
 import { BASICS, getDateString, getRamadanDay } from "@/lib/gallery";
 import type { IconName } from "@/lib/icons";
 import { Icon } from "@/lib/icons";
+import { getReflectionPrompt } from "@/lib/reflection-prompts";
 import {
   ensureDayEntry,
   getDayStats,
@@ -21,8 +24,8 @@ import {
   toggleBasicCompletion,
   toggleCompletion,
 } from "@/lib/store";
-import { motion } from "framer-motion";
-import { useCallback } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 // ── Category Icons ───────────────────────────────────────────
 
@@ -84,6 +87,67 @@ export function DayDetail({
   // Monthly goals
   const monthlyGoals = state.monthlyGoals;
 
+  // Was this day previously empty? (for warm return)
+  const hadPreviousEntry = !!state.days[date];
+  const isPastMissed = !isToday && !isFuture && !hadPreviousEntry;
+
+  // Progressive celebration tracking
+  const prevPercentRef = useRef(stats.percent);
+  const [celebrationMsg, setCelebrationMsg] = useState<string | null>(null);
+
+  // Bismillah opening
+  const [showBismillah, setShowBismillah] = useState(true);
+
+  // Warm save overlay
+  const [showSaveOverlay, setShowSaveOverlay] = useState(false);
+  const [saveMessage, setSaveMessage] = useState("");
+
+  // Daily reflection prompt
+  const reflectionPrompt =
+    ramadanDay > 0 && ramadanDay <= 30
+      ? getReflectionPrompt(ramadanDay, locale)
+      : t("day.reflection_placeholder");
+
+  // Bismillah auto-dismiss
+  useEffect(() => {
+    const timer = setTimeout(() => setShowBismillah(false), 2000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Progressive celebrations — detect threshold crossings
+  useEffect(() => {
+    const prev = prevPercentRef.current;
+    const curr = stats.percent;
+    if (curr > prev) {
+      const milestones = [
+        { at: 100, key: "celebration.complete", fx: "big" as const },
+        { at: 75, key: "celebration.three_quarter", fx: "medium" as const },
+        { at: 50, key: "celebration.half", fx: "medium" as const },
+        { at: 25, key: "celebration.quarter", fx: "small" as const },
+      ];
+      for (const m of milestones) {
+        if (prev < m.at && curr >= m.at) {
+          setCelebrationMsg(t(m.key));
+          if (m.at === 100) {
+            fireConfetti("big");
+            playSound("celebrate");
+            haptic("heavy");
+          } else if (m.at >= 50) {
+            fireConfetti("medium");
+            playSound("complete");
+            haptic("medium");
+          } else {
+            playSound("check");
+            haptic("light");
+          }
+          setTimeout(() => setCelebrationMsg(null), 2500);
+          break;
+        }
+      }
+    }
+    prevPercentRef.current = curr;
+  }, [stats.percent, t]);
+
   // ── Handlers ───────────────────────────────────────────────
 
   const handleToggleBasic = useCallback(
@@ -91,6 +155,8 @@ export function DayDetail({
       const next = toggleBasicCompletion(stateWithDay, date, basicId);
       saveState(next);
       onStateChange(next);
+      haptic("light");
+      playSound("check");
     },
     [stateWithDay, date, onStateChange],
   );
@@ -100,6 +166,8 @@ export function DayDetail({
       const next = toggleCompletion(stateWithDay, date, habitId);
       saveState(next);
       onStateChange(next);
+      haptic("light");
+      playSound("check");
     },
     [stateWithDay, date, onStateChange],
   );
@@ -133,6 +201,42 @@ export function DayDetail({
 
   return (
     <div className="mx-auto max-w-lg px-5 pb-10 pt-5">
+      {/* Bismillah opening — fades in then out */}
+      <AnimatePresence>
+        {showBismillah && (
+          <motion.div
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.6 }}
+            className="mb-4 text-center"
+          >
+            <p
+              className="text-xl font-bold text-primary-600/80 dark:text-primary-400/80"
+              style={{ fontFamily: "var(--font-arabic)" }}
+            >
+              {t("bismillah")}
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Progressive celebration toast */}
+      <AnimatePresence>
+        {celebrationMsg && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8, y: -10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            className="mb-4 rounded-2xl bg-gradient-to-r from-primary-500 to-emerald-500 px-5 py-3.5 text-center text-lg font-black text-white shadow-lg"
+            style={{
+              fontFamily: isAr ? "var(--font-arabic)" : "var(--font-heading)",
+            }}
+          >
+            {celebrationMsg}
+          </motion.div>
+        )}
+      </AnimatePresence>
       {/* Header */}
       <div className="mb-6 flex items-center gap-4">
         <button
@@ -201,6 +305,27 @@ export function DayDetail({
         </div>
       )}
 
+      {/* Warm return for missed past days */}
+      {isPastMissed && (
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-6 rounded-2xl border-2 border-primary-200 bg-primary-50/60 p-5 text-center dark:border-primary-800 dark:bg-primary-950/30"
+        >
+          <p
+            className="mb-1 text-base font-bold text-primary-700 dark:text-primary-300"
+            style={{
+              fontFamily: isAr ? "var(--font-arabic)" : "var(--font-heading)",
+            }}
+          >
+            {t("warm_return.title")}
+          </p>
+          <p className="text-sm font-medium text-primary-600/80 dark:text-primary-400/80">
+            {t("warm_return.message")}
+          </p>
+        </motion.div>
+      )}
+
       {/* ── Layer 1a: Basics ── */}
       <section className="mb-7">
         <h3 className="mb-4 flex items-center gap-2.5 text-sm font-bold uppercase tracking-wide text-secondary-600 dark:text-secondary-400">
@@ -209,7 +334,7 @@ export function DayDetail({
         </h3>
         <div className="space-y-2.5">
           {enabledBasics.map((basic) => {
-            const done = entry.basics[basic.id] !== false;
+            const done = entry.basics[basic.id] === true;
             return (
               <motion.button
                 key={basic.id}
@@ -220,14 +345,14 @@ export function DayDetail({
                 className={`flex w-full items-center gap-3.5 rounded-2xl border-2 p-4 text-start transition-all ${
                   done
                     ? "border-primary-200 bg-primary-50/60 dark:border-primary-800 dark:bg-primary-950/20"
-                    : "border-red-200 bg-red-50/60 dark:border-red-900 dark:bg-red-950/20"
+                    : "border-secondary-200 bg-white dark:border-secondary-700 dark:bg-secondary-800/60"
                 }`}
               >
                 <div
                   className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${
                     done
                       ? "bg-primary-500 text-white shadow-sm shadow-primary-500/30"
-                      : "bg-red-100 text-red-500 dark:bg-red-900/30"
+                      : "bg-secondary-100 text-secondary-500 dark:bg-secondary-700 dark:text-secondary-400"
                   }`}
                 >
                   <Icon name={basic.iconName} className="h-5 w-5" />
@@ -236,7 +361,7 @@ export function DayDetail({
                   className={`flex-1 text-base font-semibold ${
                     done
                       ? "text-secondary-900 dark:text-white"
-                      : "text-red-700 dark:text-red-300"
+                      : "text-secondary-700 dark:text-secondary-300"
                   }`}
                 >
                   {isAr ? basic.titleAr : t(basic.titleKey)}
@@ -245,7 +370,7 @@ export function DayDetail({
                   className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-colors ${
                     done
                       ? "bg-primary-500 text-white"
-                      : "border-2 border-red-300 dark:border-red-700"
+                      : "border-2 border-secondary-300 dark:border-secondary-600"
                   }`}
                 >
                   {done && <Icon name="check" className="h-4 w-4" />}
@@ -462,7 +587,7 @@ export function DayDetail({
           value={entry.reflection || ""}
           onChange={(e) => handleReflection(e.target.value)}
           disabled={isFuture}
-          placeholder={t("day.reflection_placeholder")}
+          placeholder={reflectionPrompt}
           rows={3}
           className="w-full resize-none rounded-2xl border-2 border-secondary-200 bg-white px-5 py-4 text-base text-secondary-900 placeholder-secondary-400 outline-none transition-colors focus:border-primary-400 focus:ring-2 focus:ring-primary-400/30 disabled:opacity-60 dark:border-secondary-700 dark:bg-secondary-800 dark:text-white dark:placeholder-secondary-500"
         />
@@ -483,7 +608,9 @@ export function DayDetail({
             <p className="text-xl font-black text-primary-600 dark:text-primary-400">
               {stats.dailyDone}/{stats.dailyTotal}
             </p>
-            <p className="text-sm font-medium text-secondary-500">{t("day.daily_title")}</p>
+            <p className="text-sm font-medium text-secondary-500">
+              {t("day.daily_title")}
+            </p>
           </div>
           <div>
             <p className="text-xl font-black text-accent-600 dark:text-accent-400">
@@ -496,18 +623,72 @@ export function DayDetail({
         </div>
       </div>
 
+      {/* ── Warm Save Overlay ── */}
+      <AnimatePresence>
+        {showSaveOverlay && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-primary-900/60 backdrop-blur-sm"
+          >
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="mx-6 max-w-sm rounded-3xl bg-white p-8 text-center shadow-2xl dark:bg-secondary-800"
+            >
+              <div className="mb-4 text-5xl font-black text-primary-500">
+                {stats.percent}%
+              </div>
+              <p
+                className="mb-2 text-xl font-black text-secondary-900 dark:text-white"
+                style={{
+                  fontFamily: isAr
+                    ? "var(--font-arabic)"
+                    : "var(--font-heading)",
+                }}
+              >
+                {t("save_moment.title")}
+              </p>
+              <p className="text-base font-medium text-secondary-500 dark:text-secondary-400">
+                {saveMessage}
+              </p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* ── Save & Close Button — big, game-like ── */}
       <motion.button
         type="button"
         whileTap={{ scale: 0.96 }}
         onClick={() => {
-          if (onSave) onSave();
-          else onClose();
+          // Pick a random affirming message
+          const msgs = t("save_moment.messages");
+          const msgArr = Array.isArray(msgs)
+            ? msgs
+            : [
+                "Allah sees every small deed.",
+                "Consistency is the real secret.",
+              ];
+          setSaveMessage(
+            String(msgArr[Math.floor(Math.random() * msgArr.length)]),
+          );
+          setShowSaveOverlay(true);
+          haptic("medium");
+          playSound("complete");
+          // After 2s, actually save and close
+          setTimeout(() => {
+            if (onSave) onSave();
+            else onClose();
+          }, 2000);
         }}
         className="mt-7 flex w-full items-center justify-center gap-3 rounded-2xl bg-gradient-to-r from-primary-500 to-emerald-500 px-6 py-4.5 text-lg font-black text-white shadow-lg transition-all hover:shadow-xl active:shadow-md"
         style={{
           fontFamily: isAr ? "var(--font-arabic)" : "var(--font-heading)",
-          boxShadow: "0 5px 0 rgba(4,120,87,0.5), 0 8px 25px rgba(16,185,129,0.25)",
+          boxShadow:
+            "0 5px 0 rgba(4,120,87,0.5), 0 8px 25px rgba(16,185,129,0.25)",
         }}
       >
         <Icon name="check" className="h-5 w-5" />

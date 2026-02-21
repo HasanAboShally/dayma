@@ -241,6 +241,40 @@
     "last_ten": "The last 10 nights are here! Seek Laylatul Qadr.",
     "weekly_levelup": "New week, new level! Keep building on what you've started."
   },
+  "celebration": {
+    "quarter": "Good start! Keep going",
+    "half": "Halfway there! MashaAllah",
+    "three_quarter": "Almost there! You're doing amazing",
+    "complete": "All done! MashaAllah!"
+  },
+  "save_moment": {
+    "title": "You showed up today",
+    "messages": [
+      "Allah sees every small deed.",
+      "Consistency is the real secret.",
+      "The most beloved deeds are the most constant.",
+      "Every good deed is sadaqah.",
+      "Your effort is never wasted.",
+      "Small steps, big reward."
+    ]
+  },
+  "bismillah": "بسم الله الرحمن الرحيم",
+  "phase_ceremony": {
+    "mercy_title": "Days of Mercy",
+    "mercy_subtitle": "The first 10 days — seek Allah's mercy",
+    "mercy_dua": "رَبِّ اغْفِرْ وَارْحَمْ وَأَنتَ خَيْرُ الرَّاحِمِينَ",
+    "forgiveness_title": "Days of Forgiveness",
+    "forgiveness_subtitle": "The second 10 days — seek Allah's forgiveness",
+    "forgiveness_dua": "أَسْتَغْفِرُ اللَّهَ الَّذِي لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ وَأَتُوبُ إِلَيْهِ",
+    "freedom_title": "Salvation from Fire",
+    "freedom_subtitle": "The last 10 nights — seek refuge from the Fire",
+    "freedom_dua": "اللَّهُمَّ أَجِرْنِي مِنَ النَّارِ",
+    "continue": "Continue your journey"
+  },
+  "warm_return": {
+    "title": "Welcome back",
+    "message": "Every new moment is a chance to return. Let's pick up where you left off."
+  },
   "settings": {
     "title": "Settings",
     "language": "Language",

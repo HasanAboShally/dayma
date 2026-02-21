@@ -330,15 +330,15 @@
     min-height: 3rem;
     transition: all 0.15s;
     transform: translateY(0);
-    box-shadow: 0 4px 0 rgba(0,0,0,0.15);
+    box-shadow: 0 4px 0 rgba(0, 0, 0, 0.15);
   }
   .btn:hover {
     transform: translateY(-1px);
-    box-shadow: 0 5px 0 rgba(0,0,0,0.15);
+    box-shadow: 0 5px 0 rgba(0, 0, 0, 0.15);
   }
   .btn:active {
     transform: translateY(2px);
-    box-shadow: 0 1px 0 rgba(0,0,0,0.15);
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
   }
   .btn:focus {
     outline: none;

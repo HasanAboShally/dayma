@@ -7,7 +7,7 @@
 import { createTranslator } from "@/i18n/client";
 import type { AppLocale, HexDay, HexDayStatus } from "@/lib/app-types";
 import { getDailyContent } from "@/lib/daily-content";
-import { haptic, playSound } from "@/lib/feedback";
+import { fireConfetti, haptic } from "@/lib/feedback";
 import { getDateString } from "@/lib/gallery";
 import { Icon } from "@/lib/icons";
 import {
@@ -34,9 +34,6 @@ import {
 import { InAppBanner } from "./InAppBanner";
 
 // Lazy-load heavy components only needed on interaction or special state
-const Confetti = lazy(() =>
-  import("./Confetti").then((m) => ({ default: m.Confetti })),
-);
 const DayDetail = lazy(() =>
   import("./DayDetail").then((m) => ({ default: m.DayDetail })),
 );
@@ -444,7 +441,6 @@ export function HexGrid({ locale }: HexGridProps) {
   const isRTL = locale === "ar";
   const [state, setState] = useState(() => loadState());
   const [selectedHex, setSelectedHex] = useState<HexDay | null>(null);
-  const [showConfetti, setShowConfetti] = useState(false);
   const todayRef = useRef<HTMLDivElement>(null);
 
   const persist = useCallback((next: typeof state) => {
@@ -458,17 +454,41 @@ export function HexGrid({ locale }: HexGridProps) {
   const todayStats = getDayStats(state, getDateString());
   const dailyContent = useMemo(() => getDailyContent(currentDay), [currentDay]);
 
-  // Detect 100% completion for confetti
-  const prevPercent = useRef(todayStats.percent);
+  // ── Encouragement Messages ────────────────────────────────
+  const encouragementMsg = useMemo(() => {
+    if (isLastTenNights(currentDay)) return t("encouragement.last_ten");
+    if (streak >= 21) return t("encouragement.streak_21");
+    if (streak >= 14) return t("encouragement.streak_14");
+    if (streak >= 7) return t("encouragement.streak_7");
+    if (streak >= 3) return t("encouragement.streak_3");
+    if (streak === 0 && currentDay > 1) return t("encouragement.recovery");
+    if (todayStats.percent >= 80) return t("encouragement.completion_high");
+    if (todayStats.percent > 0 && todayStats.percent < 40)
+      return t("encouragement.completion_low");
+    return null;
+  }, [streak, currentDay, todayStats.percent, t]);
+
+  // ── Phase Transition Ceremony ─────────────────────────────
+  const [showPhaseCeremony, setShowPhaseCeremony] = useState<
+    "mercy" | "forgiveness" | "freedom" | null
+  >(null);
+
   useEffect(() => {
-    if (todayStats.percent === 100 && prevPercent.current < 100) {
-      setShowConfetti(true);
-      playSound("celebrate");
-      haptic("heavy");
-      setTimeout(() => setShowConfetti(false), 3000);
+    const phase =
+      currentDay >= 21
+        ? "freedom"
+        : currentDay >= 11
+          ? "forgiveness"
+          : "mercy";
+    const isPhaseStart =
+      currentDay === 1 || currentDay === 11 || currentDay === 21;
+    if (!isPhaseStart) return;
+    const key = `dayma_phase_seen_${phase}`;
+    if (typeof localStorage !== "undefined" && !localStorage.getItem(key)) {
+      setTimeout(() => setShowPhaseCeremony(phase), 800);
+      localStorage.setItem(key, "1");
     }
-    prevPercent.current = todayStats.percent;
-  }, [todayStats.percent]);
+  }, [currentDay]);
 
   const { positions, totalH } = useMemo(
     () => calculateLayout(hexData),
@@ -563,7 +583,9 @@ export function HexGrid({ locale }: HexGridProps) {
           {/* Day counter — big, bold, game-like */}
           <div className="flex items-center gap-3">
             <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-primary-500 to-primary-700 shadow-lg shadow-primary-500/30">
-              <span className="text-2xl font-black text-white leading-none">{currentDay}</span>
+              <span className="text-2xl font-black text-white leading-none">
+                {currentDay}
+              </span>
             </div>
             <div>
               <h1
@@ -634,12 +656,41 @@ export function HexGrid({ locale }: HexGridProps) {
               fontFamily: isRTL ? "var(--font-arabic)" : "var(--font-sans)",
             }}
           >
-            &ldquo;{isRTL ? dailyContent.verse.ar : dailyContent.verse.en}&rdquo;
+            &ldquo;{isRTL ? dailyContent.verse.ar : dailyContent.verse.en}
+            &rdquo;
           </p>
           <p className="mt-1.5 text-center text-xs font-semibold text-secondary-400">
             — {dailyContent.verse.ref}
           </p>
+          {/* Daily hadith — previously hidden, now surfaced */}
+          <div className="mt-3 border-t border-secondary-200/50 pt-3 dark:border-secondary-700/50">
+            <p
+              className="text-center text-xs leading-relaxed font-medium text-secondary-600/80 dark:text-secondary-400/80"
+              style={{
+                fontFamily: isRTL ? "var(--font-arabic)" : "var(--font-sans)",
+              }}
+            >
+              &ldquo;{isRTL ? dailyContent.hadith.ar : dailyContent.hadith.en}
+              &rdquo;
+            </p>
+            <p className="mt-1 text-center text-[0.65rem] font-medium text-secondary-400/80">
+              — {dailyContent.hadith.ref}
+            </p>
+          </div>
         </div>
+
+        {/* Contextual encouragement message */}
+        {encouragementMsg && (
+          <motion.div
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-3 rounded-2xl bg-white/50 px-4 py-3 text-center dark:bg-secondary-800/30"
+          >
+            <p className="text-sm font-semibold text-primary-700 dark:text-primary-300">
+              {encouragementMsg}
+            </p>
+          </motion.div>
+        )}
 
         {/* Laylatul Qadr Banner */}
         {isLaylatalQadr && (
@@ -764,7 +815,8 @@ export function HexGrid({ locale }: HexGridProps) {
           className="pointer-events-auto flex items-center gap-3 rounded-2xl bg-gradient-to-r from-primary-500 to-emerald-500 px-8 py-4 text-base font-black text-white shadow-xl shadow-primary-600/40 transition-all hover:shadow-2xl hover:shadow-primary-500/50 active:scale-95 active:shadow-md"
           style={{
             fontFamily: isRTL ? "var(--font-arabic)" : "var(--font-heading)",
-            boxShadow: "0 6px 0 rgba(4,120,87,0.6), 0 10px 30px rgba(16,185,129,0.3)",
+            boxShadow:
+              "0 6px 0 rgba(4,120,87,0.6), 0 10px 30px rgba(16,185,129,0.3)",
           }}
         >
           <Icon name="sparkles" className="h-5 w-5" />
@@ -817,10 +869,9 @@ export function HexGrid({ locale }: HexGridProps) {
                   onClose={() => setSelectedHex(null)}
                   onSave={() => {
                     setSelectedHex(null);
-                    setShowConfetti(true);
-                    playSound("celebrate");
-                    haptic("heavy");
-                    setTimeout(() => setShowConfetti(false), 3000);
+                    // DayDetail already showed warm save overlay —
+                    // just fire confetti on close for the path view
+                    fireConfetti("big");
                   }}
                 />
               </Suspense>
@@ -829,10 +880,69 @@ export function HexGrid({ locale }: HexGridProps) {
         )}
       </AnimatePresence>
 
-      {/* ── Confetti Celebration ────────────────────── */}
-      <Suspense fallback={null}>
-        <Confetti active={showConfetti} />
-      </Suspense>
+      {/* ── Phase Transition Ceremony ──────────────── */}
+      <AnimatePresence>
+        {showPhaseCeremony && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-primary-900/70 backdrop-blur-md"
+          >
+            <motion.div
+              initial={{ scale: 0.7, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ type: "spring", damping: 20, stiffness: 200 }}
+              className="mx-6 max-w-sm rounded-3xl bg-white p-8 text-center shadow-2xl dark:bg-secondary-800"
+            >
+              <div className="mb-3 text-4xl">
+                {showPhaseCeremony === "mercy"
+                  ? "🤲"
+                  : showPhaseCeremony === "forgiveness"
+                    ? "🕊️"
+                    : "🔥"}
+              </div>
+              <h2
+                className="mb-2 text-2xl font-black text-secondary-900 dark:text-white"
+                style={{
+                  fontFamily: isRTL
+                    ? "var(--font-arabic)"
+                    : "var(--font-heading)",
+                }}
+              >
+                {t(`phase_ceremony.${showPhaseCeremony}_title`)}
+              </h2>
+              <p className="mb-4 text-sm font-medium text-secondary-500 dark:text-secondary-400">
+                {t(`phase_ceremony.${showPhaseCeremony}_subtitle`)}
+              </p>
+              <p
+                className="mb-6 text-xl font-bold text-primary-600 dark:text-primary-400"
+                style={{ fontFamily: "var(--font-arabic)" }}
+              >
+                {t(`phase_ceremony.${showPhaseCeremony}_dua`)}
+              </p>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowPhaseCeremony(null);
+                  fireConfetti("big");
+                }}
+                className="w-full rounded-2xl bg-gradient-to-r from-primary-500 to-emerald-500 px-6 py-3.5 text-base font-black text-white shadow-lg"
+                style={{
+                  fontFamily: isRTL
+                    ? "var(--font-arabic)"
+                    : "var(--font-heading)",
+                  boxShadow:
+                    "0 4px 0 rgba(4,120,87,0.5), 0 6px 20px rgba(16,185,129,0.25)",
+                }}
+              >
+                {t("phase_ceremony.continue")}
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

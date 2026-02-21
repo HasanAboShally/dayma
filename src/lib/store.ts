@@ -265,11 +265,11 @@ export function updateMonthlyGoalTarget(
 
 // -- Day Entries --
 
-/** Ensure a day entry exists, auto-checking all enabled basics */
+/** Ensure a day entry exists. Basics start unchecked so users confirm each one. */
 export function ensureDayEntry(state: AppState, date: string): AppState {
   if (state.days[date]) return state;
   const entry: DayEntry = {
-    basics: Object.fromEntries(state.enabledBasics.map((id) => [id, true])),
+    basics: Object.fromEntries(state.enabledBasics.map((id) => [id, false])),
     completions: {},
     monthlyGoalCompletions: {},
     reflection: "",
@@ -401,7 +401,7 @@ export function getTodayEntry(state: AppState): DayEntry {
   const today = getDateString();
   return (
     state.days[today] || {
-      basics: Object.fromEntries(state.enabledBasics.map((id) => [id, true])),
+      basics: Object.fromEntries(state.enabledBasics.map((id) => [id, false])),
       completions: {},
       monthlyGoalCompletions: {},
       reflection: "",
@@ -415,17 +415,17 @@ export function getDayStats(state: AppState, date: string) {
   if (!entry) {
     return {
       basicsTotal: state.enabledBasics.length,
-      basicsDone: state.enabledBasics.length,
+      basicsDone: 0,
       dailyTotal: 0,
       dailyDone: 0,
       monthlyDone: 0,
-      percent: 100,
+      percent: 0,
     };
   }
 
   const basicsTotal = state.enabledBasics.length;
   const basicsDone = state.enabledBasics.filter(
-    (id) => entry.basics[id] !== false,
+    (id) => entry.basics[id] === true,
   ).length;
 
   // All enabled daily habits show every day (no frequency filtering)

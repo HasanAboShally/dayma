@@ -228,7 +228,12 @@ export function ProgressView({ locale }: ProgressViewProps) {
           {/* Basics ring */}
           <div className="flex flex-col items-center">
             <div className="relative">
-              {renderRing(categoryBreakdown.basicsPercent, "text-primary-500", 96, 8)}
+              {renderRing(
+                categoryBreakdown.basicsPercent,
+                "text-primary-500",
+                96,
+                8,
+              )}
               <span className="absolute inset-0 flex items-center justify-center text-base font-black text-secondary-700 dark:text-secondary-300">
                 {categoryBreakdown.basicsPercent}%
               </span>
@@ -241,7 +246,12 @@ export function ProgressView({ locale }: ProgressViewProps) {
           {/* Daily habits ring */}
           <div className="flex flex-col items-center">
             <div className="relative">
-              {renderRing(categoryBreakdown.dailyPercent, "text-emerald-500", 96, 8)}
+              {renderRing(
+                categoryBreakdown.dailyPercent,
+                "text-emerald-500",
+                96,
+                8,
+              )}
               <span className="absolute inset-0 flex items-center justify-center text-base font-black text-secondary-700 dark:text-secondary-300">
                 {categoryBreakdown.dailyPercent}%
               </span>

@@ -1,7 +1,67 @@
 // ============================================================
 // Ramadan Companion — Feedback Utilities
-// Haptic feedback + audio cues for micro-interactions
+// Haptic feedback + audio cues + confetti for micro-interactions
 // ============================================================
+
+import confetti from "canvas-confetti";
+
+// Ramadan-themed confetti palette
+const CONFETTI_COLORS = [
+  "#10b981", // emerald
+  "#34d399", // light emerald
+  "#f59e0b", // amber
+  "#fbbf24", // gold
+  "#a78bfa", // purple accent
+];
+
+/**
+ * Fire a celebration confetti burst (canvas-confetti).
+ * intensity: "small" (25%), "medium" (50/75%), "big" (100%)
+ */
+export function fireConfetti(
+  intensity: "small" | "medium" | "big" = "big",
+): void {
+  if (typeof window === "undefined") return;
+  try {
+    const base =
+      intensity === "big" ? 80 : intensity === "medium" ? 45 : 25;
+    const spread = intensity === "big" ? 70 : intensity === "medium" ? 55 : 40;
+
+    // Fire from left
+    confetti({
+      particleCount: base,
+      angle: 60,
+      spread,
+      origin: { x: 0, y: 0.7 },
+      colors: CONFETTI_COLORS,
+      disableForReducedMotion: true,
+    });
+    // Fire from right
+    confetti({
+      particleCount: base,
+      angle: 120,
+      spread,
+      origin: { x: 1, y: 0.7 },
+      colors: CONFETTI_COLORS,
+      disableForReducedMotion: true,
+    });
+
+    if (intensity === "big") {
+      // Extra shower from center for 100%
+      setTimeout(() => {
+        confetti({
+          particleCount: 60,
+          spread: 100,
+          origin: { x: 0.5, y: 0.4 },
+          colors: CONFETTI_COLORS,
+          disableForReducedMotion: true,
+        });
+      }, 250);
+    }
+  } catch {
+    // Silently fail if canvas-confetti unavailable
+  }
+}
 
 /**
  * Trigger haptic feedback if the device supports it.
