@@ -117,8 +117,22 @@ export default defineConfig({
         // IMPORTANT: 'workerd' must come before 'browser'/'worker' so React 19
         // resolves to server.edge.js (uses setTimeout) instead of
         // server.browser.js (uses MessageChannel, unavailable in Workers)
-        conditions: ["workerd", "worker", "browser", "import", "module", "default"],
-        externalConditions: ["workerd", "worker", "node", "import", "module", "default"],
+        conditions: [
+          "workerd",
+          "worker",
+          "browser",
+          "import",
+          "module",
+          "default",
+        ],
+        externalConditions: [
+          "workerd",
+          "worker",
+          "node",
+          "import",
+          "module",
+          "default",
+        ],
       },
     },
   },

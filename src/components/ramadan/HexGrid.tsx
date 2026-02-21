@@ -653,9 +653,9 @@ export function HexGrid({ locale }: HexGridProps) {
       </header>
 
       {/* ── Journey Path ───────────────────────────── */}
-      <div className="flex-1 overflow-y-auto pb-28">
+      <div className="flex-1 overflow-y-auto overflow-x-hidden pb-28">
         <div
-          className="relative mx-auto"
+          className="relative mx-auto overflow-hidden"
           style={{ width: CONTAINER_W, maxWidth: "100%", height: totalH }}
         >
           {/* Decorative elements */}
@@ -664,7 +664,7 @@ export function HexGrid({ locale }: HexGridProps) {
           {/* SVG connecting path */}
           <svg
             className="pointer-events-none absolute left-0 top-0"
-            style={{ width: CONTAINER_W, height: totalH }}
+            style={{ width: CONTAINER_W, maxWidth: "100%", height: totalH }}
             viewBox={`0 0 ${CONTAINER_W} ${totalH}`}
             aria-hidden="true"
           >

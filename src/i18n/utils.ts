@@ -1,5 +1,5 @@
-import en from "./en.json";
 import ar from "./ar.json";
+import en from "./en.json";
 
 // Supported locales
 export const locales = ["en", "ar"] as const;
@@ -98,7 +98,10 @@ export function useTranslations(locale: Locale) {
 /**
  * Get translated path for locale switching
  */
-export function getTranslatedPath(pathname: string, targetLocale: Locale): string {
+export function getTranslatedPath(
+  pathname: string,
+  targetLocale: Locale,
+): string {
   const segments = pathname.split("/").filter(Boolean);
 
   // Remove current locale if present
@@ -107,7 +110,10 @@ export function getTranslatedPath(pathname: string, targetLocale: Locale): strin
   }
 
   // Add target locale
-  return `/${targetLocale}/${segments.join("/")}`.replace(/\/$/, "") || `/${targetLocale}`;
+  return (
+    `/${targetLocale}/${segments.join("/")}`.replace(/\/$/, "") ||
+    `/${targetLocale}`
+  );
 }
 
 /**
@@ -133,7 +139,11 @@ export function formatNumber(num: number, locale: Locale): string {
 /**
  * Format date based on locale
  */
-export function formatDate(date: Date, locale: Locale, options?: Intl.DateTimeFormatOptions): string {
+export function formatDate(
+  date: Date,
+  locale: Locale,
+  options?: Intl.DateTimeFormatOptions,
+): string {
   return new Intl.DateTimeFormat(locale === "ar" ? "ar-SA" : "en-US", {
     year: "numeric",
     month: "long",
@@ -148,7 +158,7 @@ export function formatDate(date: Date, locale: Locale, options?: Intl.DateTimeFo
 export function formatCurrency(
   amount: number,
   locale: Locale,
-  currency: string = "USD"
+  currency: string = "USD",
 ): string {
   return new Intl.NumberFormat(locale === "ar" ? "ar-SA" : "en-US", {
     style: "currency",
