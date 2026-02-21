@@ -564,6 +564,11 @@
     "open_source_title": "Open Source",
     "open_source_desc": "Ramadan Companion is built with love and shared freely. Contributions and feedback are welcome.",
     "tech_title": "Built With",
-    "tech_desc": "Astro, React, Tailwind CSS, and deployed on Cloudflare. Designed to be fast, accessible, and work offline as a PWA."
+    "tech_desc": "Astro, React, Tailwind CSS, and deployed on Cloudflare. Designed to be fast, accessible, and work offline as a PWA.",
+    "install_title": "Install Dayma",
+    "install_desc": "Add to your home screen for the full app experience — works offline!",
+    "install_button": "Install App",
+    "install_dismiss": "Not now",
+    "install_ios": "Tap {shareIcon} then \"Add to Home Screen\""
   }
 }

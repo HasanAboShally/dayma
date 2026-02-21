@@ -2,6 +2,7 @@
 import "@/styles/global.css";
 import { getLangFromUrl, getDirection, useTranslations, type Locale } from "@/i18n/utils";
 import CookieConsent from "@/components/ui/CookieConsent.astro";
+import { InstallPrompt } from "@/components/pwa/InstallPrompt";
 import { ViewTransitions } from "astro:transitions";
 
 interface Props {
@@ -187,6 +188,9 @@ const structuredData = {
 
     <!-- Cookie Consent Banner (GDPR/CCPA compliance) -->
     <CookieConsent locale={lang as Locale} />
+
+    <!-- PWA Install Prompt -->
+    <InstallPrompt client:idle locale={lang as Locale} />
 
     <!-- Smooth scroll via CSS only — no JS library needed -->
     <script>

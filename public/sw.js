@@ -12,12 +12,13 @@
  * are already content-addressed so old versions are harmless.
  */
 
-const CACHE_VERSION = "v4";
+const CACHE_VERSION = "v5";
 const CACHE_NAME = "app-cache-" + CACHE_VERSION;
 const OFFLINE_URL = "/offline.html";
 
 // App shell pages — precached on install for instant offline access
 const APP_SHELL = [
+  "/",
   "/offline.html",
   "/manifest.json",
   "/en/app/today",
