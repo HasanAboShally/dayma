@@ -37,7 +37,6 @@ import {
 } from "react";
 import { InAppBanner } from "./InAppBanner";
 import { QuranAudio } from "./QuranAudio";
-import { OnboardingTour } from "./OnboardingTour";
 import { ToastContainer } from "@/components/ui/Toast";
 
 // Lazy-load heavy components only needed on interaction or special state
@@ -884,17 +883,25 @@ export function HexGrid({ locale }: HexGridProps) {
               animate={{ opacity: 1 }}
               exit={prefersReducedMotion ? undefined : { opacity: 0 }}
             />
-            {/* Sheet */}
+            {/* Sheet — swipe down to close */}
             <motion.div
               className="relative mt-auto max-h-[92vh] overflow-y-auto rounded-t-3xl bg-white shadow-2xl dark:bg-secondary-900"
               initial={prefersReducedMotion ? false : { y: "100%" }}
               animate={{ y: 0 }}
               exit={prefersReducedMotion ? undefined : { y: "100%" }}
               transition={prefersReducedMotion ? { duration: 0 } : { type: "spring", damping: 28, stiffness: 300 }}
+              drag="y"
+              dragConstraints={{ top: 0, bottom: 0 }}
+              dragElastic={{ top: 0, bottom: 0.6 }}
+              onDragEnd={(_e, info) => {
+                if (info.offset.y > 100 || info.velocity.y > 500) {
+                  setSelectedHex(null);
+                }
+              }}
             >
               {/* Drag handle */}
-              <div className="sticky top-0 z-10 flex justify-center bg-white/80 pb-1 pt-3 backdrop-blur-sm dark:bg-secondary-900/80">
-                <div className="h-1 w-10 rounded-full bg-secondary-300 dark:bg-secondary-600" />
+              <div className="sticky top-0 z-10 flex cursor-grab justify-center bg-white/80 pb-1 pt-3 backdrop-blur-sm active:cursor-grabbing dark:bg-secondary-900/80">
+                <div className="h-1.5 w-12 rounded-full bg-secondary-300 dark:bg-secondary-600" />
               </div>
               <Suspense
                 fallback={
@@ -989,9 +996,6 @@ export function HexGrid({ locale }: HexGridProps) {
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* ── Onboarding Tour ────────────────────────── */}
-      {state.setupComplete && <OnboardingTour locale={locale} />}
 
       {/* ── Toast Notifications ────────────────────── */}
       <ToastContainer />
